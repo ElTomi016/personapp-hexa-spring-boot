@@ -10,3 +10,10 @@ db.createUser({
   ],
   mechanisms: ["SCRAM-SHA-1","SCRAM-SHA-256"]
 })
+
+// Colecciones de la base persona_db (mismo modelo que las tablas de MariaDB)
+db = db.getSiblingDB("persona_db")
+db.createCollection("persona")
+db.createCollection("profesion")
+db.createCollection("telefono")
+db.createCollection("estudios")

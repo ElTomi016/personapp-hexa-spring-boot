@@ -1,3 +1,5 @@
+-- ADVERTENCIA: este script elimina y recrea el usuario y el esquema persona_db.
+-- Usar solo en ambientes de desarrollo.
 FLUSH PRIVILEGES;
 --
 DROP USER IF EXISTS 'persona_db'@'%';
