@@ -1,6 +1,7 @@
 package co.edu.javeriana.as.personapp.mongo.mapper;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,7 +12,6 @@ import co.edu.javeriana.as.personapp.domain.Study;
 import co.edu.javeriana.as.personapp.mongo.document.EstudiosDocument;
 import co.edu.javeriana.as.personapp.mongo.document.PersonaDocument;
 import co.edu.javeriana.as.personapp.mongo.document.ProfesionDocument;
-import lombok.NonNull;
 
 @Mapper
 public class EstudiosMapperMongo {
@@ -23,29 +23,28 @@ public class EstudiosMapperMongo {
 	private ProfesionMapperMongo profesionMapperMongo;
 
 	public EstudiosDocument fromDomainToAdapter(Study study) {
+		Objects.requireNonNull(study, "study is required");
+		Objects.requireNonNull(study.getPerson(), "the study person is required");
+		Objects.requireNonNull(study.getProfession(), "the study profession is required");
+		Integer ccPer = Objects.requireNonNull(study.getPerson().getIdentification(), "person identification is required");
+		Integer idProf = Objects.requireNonNull(study.getProfession().getIdentification(),
+				"profession identification is required");
 		EstudiosDocument estudio = new EstudiosDocument();
-		estudio.setId(validateId(study.getPerson().getIdentification(), study.getProfession().getIdentification()));
-		estudio.setPrimaryPersona(validatePrimaryPersona(study.getPerson()));
-		estudio.setPrimaryProfesion(validatePrimaryProfesion(study.getProfession()));
-		estudio.setFecha(validateFecha(study.getGraduationDate()));
+		estudio.setId(buildId(ccPer, idProf));
+		PersonaDocument persona = new PersonaDocument();
+		persona.setId(ccPer);
+		estudio.setPrimaryPersona(persona);
+		ProfesionDocument profesion = new ProfesionDocument();
+		profesion.setId(idProf);
+		estudio.setPrimaryProfesion(profesion);
+		estudio.setFecha(study.getGraduationDate());
 		estudio.setUniver(validateUniver(study.getUniversityName()));
 		return estudio;
 	}
 
-	private String validateId(@NonNull Integer identificationPerson, @NonNull Integer identificationProfession) {
+	/** Id compuesto como texto: "cc-idProfesion". */
+	public static String buildId(Integer identificationPerson, Integer identificationProfession) {
 		return identificationPerson + "-" + identificationProfession;
-	}
-
-	private PersonaDocument validatePrimaryPersona(@NonNull Person person) {
-		return person != null ? personaMapperMongo.fromDomainToAdapter(person) : new PersonaDocument();
-	}
-
-	private ProfesionDocument validatePrimaryProfesion(@NonNull Profession profession) {
-		return profession != null ? profesionMapperMongo.fromDomainToAdapter(profession) : new ProfesionDocument();
-	}
-
-	private LocalDate validateFecha(LocalDate graduationDate) {
-		return graduationDate != null ? graduationDate : null;
 	}
 
 	private String validateUniver(String universityName) {
@@ -54,15 +53,29 @@ public class EstudiosMapperMongo {
 
 	public Study fromAdapterToDomain(EstudiosDocument estudiosDocument) {
 		Study study = new Study();
-		study.setPerson(personaMapperMongo.fromAdapterToDomain(estudiosDocument.getPrimaryPersona()));
-		study.setProfession(profesionMapperMongo.fromAdapterToDomain(estudiosDocument.getPrimaryProfesion()));
+		study.setPerson(validatePerson(estudiosDocument.getPrimaryPersona()));
+		study.setProfession(validateProfession(estudiosDocument.getPrimaryProfesion()));
 		study.setGraduationDate(validateGraduationDate(estudiosDocument.getFecha()));
 		study.setUniversityName(validateUniversityName(estudiosDocument.getUniver()));
-		return null;
+		return study;
+	}
+
+	private Person validatePerson(PersonaDocument persona) {
+		if (persona == null) {
+			throw new IllegalStateException("The study has no person");
+		}
+		return personaMapperMongo.fromAdapterToDomainShallow(persona);
+	}
+
+	private Profession validateProfession(ProfesionDocument profesion) {
+		if (profesion == null) {
+			throw new IllegalStateException("The study has no profession");
+		}
+		return profesionMapperMongo.fromAdapterToDomainShallow(profesion);
 	}
 
 	private LocalDate validateGraduationDate(LocalDate fecha) {
-		return fecha != null ? fecha : null;
+		return fecha;
 	}
 
 	private String validateUniversityName(String univer) {
