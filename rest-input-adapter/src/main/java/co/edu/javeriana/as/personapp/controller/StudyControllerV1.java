@@ -47,13 +47,13 @@ public class StudyControllerV1 {
 		return studyInputAdapterRest.historial(database);
 	}
 
-	@Operation(summary = "Crear estudio", description = "Crea el estudio de una persona (dni) en una profesion (professionId). La fecha usa el formato yyyy-MM-dd. Si la pareja ya existe se reemplaza. La base de la ruta manda sobre el campo database del cuerpo.")
+	@Operation(summary = "Crear estudio", description = "Crea el estudio de una persona (dni) en una profesion (professionId); ambas deben existir (404 si no). La fecha usa el formato yyyy-MM-dd. Si la pareja ya existe se reemplaza. La base de la ruta manda sobre el campo database del cuerpo.")
 	@ApiResponse(responseCode = "201", description = "Estudio creado")
 	@PostMapping(path = "/{database}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public StudyResponse crearEstudio(
 			@Parameter(description = ApiDocs.DATABASE_DESCRIPTION, example = ApiDocs.DATABASE_EXAMPLE, schema = @Schema(allowableValues = { "maria", "mongo" })) @PathVariable String database,
-			@RequestBody StudyRequest request) throws InvalidOptionException {
+			@RequestBody StudyRequest request) throws InvalidOptionException, NoExistException {
 		log.info("Into crearEstudio REST API");
 		return studyInputAdapterRest.crearEstudio(database, request);
 	}

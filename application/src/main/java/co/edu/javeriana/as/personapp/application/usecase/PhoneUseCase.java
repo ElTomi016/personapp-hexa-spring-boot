@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import co.edu.javeriana.as.personapp.application.port.in.PhoneInputPort;
+import co.edu.javeriana.as.personapp.application.port.out.PersonOutputPort;
 import co.edu.javeriana.as.personapp.application.port.out.PhoneOutputPort;
 import co.edu.javeriana.as.personapp.common.annotations.UseCase;
 import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
+import co.edu.javeriana.as.personapp.domain.Person;
 import co.edu.javeriana.as.personapp.domain.Phone;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,8 +19,13 @@ public class PhoneUseCase implements PhoneInputPort {
 
 	private PhoneOutputPort phonePersintence;
 
-	public PhoneUseCase(@Qualifier("phoneOutputAdapterMaria") PhoneOutputPort phonePersintence) {
+	// Se usa solo para comprobar que el dueno exista (Mongo no tiene claves foraneas).
+	private final PersonOutputPort personPersintence;
+
+	public PhoneUseCase(@Qualifier("phoneOutputAdapterMaria") PhoneOutputPort phonePersintence,
+			@Qualifier("personOutputAdapterMaria") PersonOutputPort personPersintence) {
 		this.phonePersintence = phonePersintence;
+		this.personPersintence = personPersintence;
 	}
 
 	@Override
@@ -27,8 +34,9 @@ public class PhoneUseCase implements PhoneInputPort {
 	}
 
 	@Override
-	public Phone create(Phone phone) {
+	public Phone create(Phone phone) throws NoExistException {
 		log.debug("Into create on Application Domain");
+		validateOwner(phone);
 		return phonePersintence.save(phone);
 	}
 
@@ -36,6 +44,7 @@ public class PhoneUseCase implements PhoneInputPort {
 	public Phone edit(String number, Phone phone) throws NoExistException {
 		Phone oldPhone = phonePersintence.findById(number);
 		if (oldPhone != null) {
+			validateOwner(phone);
 			phone.setNumber(number);
 			return phonePersintence.save(phone);
 		}
@@ -67,5 +76,16 @@ public class PhoneUseCase implements PhoneInputPort {
 	@Override
 	public Integer count() {
 		return findAll().size();
+	}
+
+	private void validateOwner(Phone phone) throws NoExistException {
+		Person owner = phone.getOwner();
+		if (owner == null || owner.getIdentification() == null) {
+			throw new NoExistException("The phone has no owner, cannot be saved");
+		}
+		if (personPersintence.findById(owner.getIdentification()) == null) {
+			throw new NoExistException("The person with id " + owner.getIdentification()
+					+ " does not exist into db, cannot be the owner of the phone");
+		}
 	}
 }
