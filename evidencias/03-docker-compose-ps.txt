@@ -1,0 +1,7 @@
+NAME                                   IMAGE                             COMMAND                  SERVICE   CREATED          STATUS                   PORTS
+personapp-hexa-spring-boot-mariadb-1   mariadb:10.11                     "docker-entrypoint.s…"   mariadb   10 seconds ago   Up 9 seconds (healthy)   0.0.0.0:3307->3306/tcp, [::]:3307->3306/tcp
+personapp-hexa-spring-boot-mongo-1     mongo:6                           "docker-entrypoint.s…"   mongo     10 seconds ago   Up 8 seconds (healthy)   0.0.0.0:27017->27017/tcp, [::]:27017->27017/tcp
+personapp-hexa-spring-boot-rest-1      personapp-hexa-spring-boot-rest   "java -jar app.jar"      rest      10 seconds ago   Up 3 seconds             0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+GET /api/v1/persona/maria -> HTTP 200
+GET /api/v1/persona/mongo -> HTTP 200
+CLI en contenedor (docker compose run --build --rm cli), personas listadas (Maria + Mongo): 10

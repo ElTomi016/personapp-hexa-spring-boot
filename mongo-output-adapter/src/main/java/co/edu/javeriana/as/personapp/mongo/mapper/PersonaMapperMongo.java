@@ -2,6 +2,7 @@ package co.edu.javeriana.as.personapp.mongo.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import co.edu.javeriana.as.personapp.domain.Study;
 import co.edu.javeriana.as.personapp.mongo.document.EstudiosDocument;
 import co.edu.javeriana.as.personapp.mongo.document.PersonaDocument;
 import co.edu.javeriana.as.personapp.mongo.document.TelefonoDocument;
-import lombok.NonNull;
 
 @Mapper
 public class PersonaMapperMongo {
@@ -25,7 +25,13 @@ public class PersonaMapperMongo {
 	@Autowired
 	private TelefonoMapperMongo telefonoMapperMongo;
 
+	/**
+	 * Conversion completa. Las listas de telefonos y estudios del documento son de
+	 * solo lectura en Mongo (se resuelven por lookup); se llenan aqui para que el
+	 * adaptador pueda persistir cada hijo en su propia coleccion.
+	 */
 	public PersonaDocument fromDomainToAdapter(Person person) {
+		Objects.requireNonNull(person, "person is required");
 		PersonaDocument personaDocument = new PersonaDocument();
 		personaDocument.setId(person.getIdentification());
 		personaDocument.setNombre(person.getFirstName());
@@ -37,7 +43,7 @@ public class PersonaMapperMongo {
 		return personaDocument;
 	}
 
-	private String validateGenero(@NonNull Gender gender) {
+	private String validateGenero(Gender gender) {
 		return gender == Gender.FEMALE ? "F" : gender == Gender.MALE ? "M" : " ";
 	}
 
@@ -57,19 +63,28 @@ public class PersonaMapperMongo {
 				: new ArrayList<TelefonoDocument>();
 	}
 
+	/** Conversion completa: incluye telefonos y estudios (con persona y profesion superficiales). */
 	public Person fromAdapterToDomain(PersonaDocument personaDocument) {
+		Person person = fromAdapterToDomainShallow(personaDocument);
+		person.setStudies(validateStudies(personaDocument.getEstudios()));
+		person.setPhoneNumbers(validatePhones(personaDocument.getTelefonos()));
+		return person;
+	}
+
+	/** Solo datos propios de la persona, sin listas. Se usa para cortar los ciclos. */
+	public Person fromAdapterToDomainShallow(PersonaDocument personaDocument) {
 		Person person = new Person();
 		person.setIdentification(personaDocument.getId());
 		person.setFirstName(personaDocument.getNombre());
 		person.setLastName(personaDocument.getApellido());
 		person.setGender(validateGender(personaDocument.getGenero()));
 		person.setAge(validateAge(personaDocument.getEdad()));
-		person.setStudies(validateStudies(personaDocument.getEstudios()));
-		person.setPhoneNumbers(validatePhones(personaDocument.getTelefonos()));
+		person.setStudies(new ArrayList<Study>());
+		person.setPhoneNumbers(new ArrayList<Phone>());
 		return person;
 	}
 
-	private @NonNull Gender validateGender(String genero) {
+	private Gender validateGender(String genero) {
 		return "F".equals(genero) ? Gender.FEMALE : "M".equals(genero) ? Gender.MALE : Gender.OTHER;
 	}
 

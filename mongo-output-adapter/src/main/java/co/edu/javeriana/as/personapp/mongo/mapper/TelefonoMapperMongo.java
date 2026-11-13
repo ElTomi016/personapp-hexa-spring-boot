@@ -1,5 +1,7 @@
 package co.edu.javeriana.as.personapp.mongo.mapper;
 
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import co.edu.javeriana.as.personapp.common.annotations.Mapper;
@@ -7,7 +9,6 @@ import co.edu.javeriana.as.personapp.domain.Person;
 import co.edu.javeriana.as.personapp.domain.Phone;
 import co.edu.javeriana.as.personapp.mongo.document.PersonaDocument;
 import co.edu.javeriana.as.personapp.mongo.document.TelefonoDocument;
-import lombok.NonNull;
 
 @Mapper
 public class TelefonoMapperMongo {
@@ -16,6 +17,7 @@ public class TelefonoMapperMongo {
 	private PersonaMapperMongo personaMapperMongo;
 
 	public TelefonoDocument fromDomainToAdapter(Phone phone) {
+		Objects.requireNonNull(phone, "phone is required");
 		TelefonoDocument telefonoDocument = new TelefonoDocument();
 		telefonoDocument.setId(phone.getNumber());
 		telefonoDocument.setOper(phone.getCompany());
@@ -23,8 +25,12 @@ public class TelefonoMapperMongo {
 		return telefonoDocument;
 	}
 
-	private PersonaDocument validateDuenio(@NonNull Person owner) {
-		return owner != null ? personaMapperMongo.fromDomainToAdapter(owner) : new PersonaDocument();
+	/** Referencia por id: @DocumentReference solo almacena el _id del dueno. */
+	private PersonaDocument validateDuenio(Person owner) {
+		Objects.requireNonNull(owner, "the phone owner is required");
+		PersonaDocument duenio = new PersonaDocument();
+		duenio.setId(owner.getIdentification());
+		return duenio;
 	}
 
 	public Phone fromAdapterToDomain(TelefonoDocument telefonoDocument) {
@@ -35,7 +41,10 @@ public class TelefonoMapperMongo {
 		return phone;
 	}
 
-	private @NonNull Person validateOwner(PersonaDocument duenio) {
-		return duenio != null ? personaMapperMongo.fromAdapterToDomain(duenio) : new Person();
+	private Person validateOwner(PersonaDocument duenio) {
+		if (duenio == null) {
+			throw new IllegalStateException("The phone has no owner");
+		}
+		return personaMapperMongo.fromAdapterToDomainShallow(duenio);
 	}
 }
