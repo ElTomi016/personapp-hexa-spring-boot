@@ -22,21 +22,22 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/api/v1/persona")
 public class PersonaControllerV1 {
-	
+
 	@Autowired
 	private PersonaInputAdapterRest personaInputAdapterRest;
-	
+
 	@ResponseBody
 	@GetMapping(path = "/{database}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<PersonaResponse> personas(@PathVariable String database) {
+	public List<PersonaResponse> personas(@PathVariable String database) throws InvalidOptionException {
 		log.info("Into personas REST API");
-			return personaInputAdapterRest.historial(database.toUpperCase());
+		return personaInputAdapterRest.historial(database);
 	}
-	
+
 	@ResponseBody
-	@PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public PersonaResponse crearPersona(@RequestBody PersonaRequest request) {
+	@PostMapping(path = "/{database}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public PersonaResponse crearPersona(@PathVariable String database, @RequestBody PersonaRequest request)
+			throws InvalidOptionException {
 		log.info("esta en el metodo crearTarea en el controller del api");
-		return personaInputAdapterRest.crearPersona(request);
+		return personaInputAdapterRest.crearPersona(database, request);
 	}
 }
