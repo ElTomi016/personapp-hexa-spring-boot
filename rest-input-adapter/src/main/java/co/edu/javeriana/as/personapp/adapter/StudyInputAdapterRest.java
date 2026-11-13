@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import co.edu.javeriana.as.personapp.application.port.in.StudyInputPort;
+import co.edu.javeriana.as.personapp.application.port.out.PersonOutputPort;
+import co.edu.javeriana.as.personapp.application.port.out.ProfessionOutputPort;
 import co.edu.javeriana.as.personapp.application.port.out.StudyOutputPort;
 import co.edu.javeriana.as.personapp.application.usecase.StudyUseCase;
 import co.edu.javeriana.as.personapp.common.annotations.Adapter;
@@ -37,10 +39,28 @@ public class StudyInputAdapterRest {
 	private StudyOutputPort studyOutputPortMongo;
 
 	@Autowired
+	@Qualifier("personOutputAdapterMaria")
+	private PersonOutputPort personOutputPortMaria;
+
+	@Autowired
+	@Qualifier("personOutputAdapterMongo")
+	private PersonOutputPort personOutputPortMongo;
+
+	@Autowired
+	@Qualifier("professionOutputAdapterMaria")
+	private ProfessionOutputPort professionOutputPortMaria;
+
+	@Autowired
+	@Qualifier("professionOutputAdapterMongo")
+	private ProfessionOutputPort professionOutputPortMongo;
+
+	@Autowired
 	private StudyMapperRest studyMapperRest;
 
 	private StudyInputPort studyInputPort(DatabaseOption database) {
-		return new StudyUseCase(database == DatabaseOption.MARIA ? studyOutputPortMaria : studyOutputPortMongo);
+		return database == DatabaseOption.MARIA
+				? new StudyUseCase(studyOutputPortMaria, personOutputPortMaria, professionOutputPortMaria)
+				: new StudyUseCase(studyOutputPortMongo, personOutputPortMongo, professionOutputPortMongo);
 	}
 
 	public List<StudyResponse> historial(String database) throws InvalidOptionException {
@@ -51,7 +71,8 @@ public class StudyInputAdapterRest {
 				.map(study -> studyMapperRest.fromDomainToAdapterRest(study, label)).collect(Collectors.toList());
 	}
 
-	public StudyResponse crearEstudio(String database, StudyRequest request) throws InvalidOptionException {
+	public StudyResponse crearEstudio(String database, StudyRequest request)
+			throws InvalidOptionException, NoExistException {
 		DatabaseOption option = DatabaseResolver.parse(database);
 		Study created = studyInputPort(option).create(studyMapperRest.fromAdapterToDomain(request));
 		return studyMapperRest.fromDomainToAdapterRest(created, DatabaseResolver.label(option));

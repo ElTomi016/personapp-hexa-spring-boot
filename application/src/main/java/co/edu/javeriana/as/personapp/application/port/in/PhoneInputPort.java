@@ -12,7 +12,7 @@ public interface PhoneInputPort {
 
 	public void setPersintence(PhoneOutputPort phonePersintence);
 
-	public Phone create(Phone phone);
+	public Phone create(Phone phone) throws NoExistException;
 
 	public Phone edit(String number, Phone phone) throws NoExistException;
 

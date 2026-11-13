@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import co.edu.javeriana.as.personapp.application.port.in.PhoneInputPort;
+import co.edu.javeriana.as.personapp.application.port.out.PersonOutputPort;
 import co.edu.javeriana.as.personapp.application.port.out.PhoneOutputPort;
 import co.edu.javeriana.as.personapp.application.usecase.PhoneUseCase;
 import co.edu.javeriana.as.personapp.common.annotations.Adapter;
@@ -37,10 +38,19 @@ public class PhoneInputAdapterRest {
 	private PhoneOutputPort phoneOutputPortMongo;
 
 	@Autowired
+	@Qualifier("personOutputAdapterMaria")
+	private PersonOutputPort personOutputPortMaria;
+
+	@Autowired
+	@Qualifier("personOutputAdapterMongo")
+	private PersonOutputPort personOutputPortMongo;
+
+	@Autowired
 	private PhoneMapperRest phoneMapperRest;
 
 	private PhoneInputPort phoneInputPort(DatabaseOption database) {
-		return new PhoneUseCase(database == DatabaseOption.MARIA ? phoneOutputPortMaria : phoneOutputPortMongo);
+		return database == DatabaseOption.MARIA ? new PhoneUseCase(phoneOutputPortMaria, personOutputPortMaria)
+				: new PhoneUseCase(phoneOutputPortMongo, personOutputPortMongo);
 	}
 
 	public List<PhoneResponse> historial(String database) throws InvalidOptionException {
@@ -51,7 +61,8 @@ public class PhoneInputAdapterRest {
 				.map(phone -> phoneMapperRest.fromDomainToAdapterRest(phone, label)).collect(Collectors.toList());
 	}
 
-	public PhoneResponse crearTelefono(String database, PhoneRequest request) throws InvalidOptionException {
+	public PhoneResponse crearTelefono(String database, PhoneRequest request)
+			throws InvalidOptionException, NoExistException {
 		DatabaseOption option = DatabaseResolver.parse(database);
 		Phone created = phoneInputPort(option).create(phoneMapperRest.fromAdapterToDomain(request));
 		return phoneMapperRest.fromDomainToAdapterRest(created, DatabaseResolver.label(option));

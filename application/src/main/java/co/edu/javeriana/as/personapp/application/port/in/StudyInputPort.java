@@ -12,7 +12,7 @@ public interface StudyInputPort {
 
 	public void setPersintence(StudyOutputPort studyPersintence);
 
-	public Study create(Study study);
+	public Study create(Study study) throws NoExistException;
 
 	public Study edit(Integer personIdentification, Integer professionIdentification, Study study)
 			throws NoExistException;

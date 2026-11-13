@@ -47,13 +47,13 @@ public class PhoneControllerV1 {
 		return phoneInputAdapterRest.historial(database);
 	}
 
-	@Operation(summary = "Crear telefono", description = "Crea un telefono asociado a una persona (ownerDni). Si el numero ya existe se reemplaza. La base de la ruta manda sobre el campo database del cuerpo.")
+	@Operation(summary = "Crear telefono", description = "Crea un telefono asociado a una persona existente (ownerDni; 404 si no existe). Si el numero ya existe se reemplaza. La base de la ruta manda sobre el campo database del cuerpo.")
 	@ApiResponse(responseCode = "201", description = "Telefono creado")
 	@PostMapping(path = "/{database}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public PhoneResponse crearTelefono(
 			@Parameter(description = ApiDocs.DATABASE_DESCRIPTION, example = ApiDocs.DATABASE_EXAMPLE, schema = @Schema(allowableValues = { "maria", "mongo" })) @PathVariable String database,
-			@RequestBody PhoneRequest request) throws InvalidOptionException {
+			@RequestBody PhoneRequest request) throws InvalidOptionException, NoExistException {
 		log.info("Into crearTelefono REST API");
 		return phoneInputAdapterRest.crearTelefono(database, request);
 	}
