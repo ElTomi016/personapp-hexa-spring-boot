@@ -2,6 +2,7 @@ package co.edu.javeriana.as.personapp.mongo.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,12 @@ import co.edu.javeriana.as.personapp.mongo.document.ProfesionDocument;
 
 @Mapper
 public class ProfesionMapperMongo {
-	
+
 	@Autowired
 	private EstudiosMapperMongo estudiosMapperMongo;
 
 	public ProfesionDocument fromDomainToAdapter(Profession profession) {
+		Objects.requireNonNull(profession, "profession is required");
 		ProfesionDocument profesionDocument = new ProfesionDocument();
 		profesionDocument.setId(profession.getIdentification());
 		profesionDocument.setNom(profession.getName());
@@ -37,12 +39,20 @@ public class ProfesionMapperMongo {
 				: new ArrayList<EstudiosDocument>();
 	}
 
+	/** Conversion completa: incluye los estudios (con persona y profesion superficiales). */
 	public Profession fromAdapterToDomain(ProfesionDocument profesionDocument) {
+		Profession profession = fromAdapterToDomainShallow(profesionDocument);
+		profession.setStudies(validateStudies(profesionDocument.getEstudios()));
+		return profession;
+	}
+
+	/** Solo datos propios de la profesion, sin lista de estudios. */
+	public Profession fromAdapterToDomainShallow(ProfesionDocument profesionDocument) {
 		Profession profession = new Profession();
 		profession.setIdentification(profesionDocument.getId());
 		profession.setName(profesionDocument.getNom());
 		profession.setDescription(validateDescription(profesionDocument.getDes()));
-		profession.setStudies(validateStudies(profesionDocument.getEstudios()));
+		profession.setStudies(new ArrayList<Study>());
 		return profession;
 	}
 

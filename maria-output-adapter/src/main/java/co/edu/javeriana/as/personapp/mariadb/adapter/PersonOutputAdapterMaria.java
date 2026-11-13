@@ -37,8 +37,11 @@ public class PersonOutputAdapterMaria implements PersonOutputPort {
 	@Override
 	public Boolean delete(Integer identification) {
 		log.debug("Into delete on Adapter MariaDB");
+		if (!personaRepositoryMaria.existsById(identification)) {
+			return false;
+		}
 		personaRepositoryMaria.deleteById(identification);
-		return personaRepositoryMaria.findById(identification).isEmpty();
+		return !personaRepositoryMaria.existsById(identification);
 	}
 
 	@Override
@@ -51,11 +54,7 @@ public class PersonOutputAdapterMaria implements PersonOutputPort {
 	@Override
 	public Person findById(Integer identification) {
 		log.debug("Into findById on Adapter MariaDB");
-		if (personaRepositoryMaria.findById(identification).isEmpty()) {
-			return null;
-		} else {
-			return personaMapperMaria.fromAdapterToDomain(personaRepositoryMaria.findById(identification).get());
-		}
+		return personaRepositoryMaria.findById(identification).map(personaMapperMaria::fromAdapterToDomain)
+				.orElse(null);
 	}
-
 }

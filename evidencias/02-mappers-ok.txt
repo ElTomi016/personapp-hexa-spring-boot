@@ -1,0 +1,12 @@
+Peticion que antes devolvia HTTP 500 (StackOverflowError) con telefonos y estudios cargados
+Datos: scripts/persona_dml_* (Pepe tiene 2 telefonos y 2 estudios)
+
+GET /api/v1/persona/maria
+[{"dni":"123456789","firstName":"Pepe","lastName":"Perez","age":"30","sex":"MALE","database":"MariaDB","status":"OK"},{"dni":"147258369","firstName":"Pepita","lastName":"Juarez","age":"10","sex":"FEMALE","database":"MariaDB","status":"OK"},{"dni":"321654987","firstName":"Pepa","lastName":"Juarez","age":"30","sex":"FEMALE","database":"MariaDB","status":"OK"},{"dni":"963852741","firstName":"Fede","lastName":"Perez","age":"18","sex":"MALE","database":"MariaDB","status":"OK"},{"dni":"987654321","firstName":"Pepito","lastName":"Perez","age":"null","sex":"MALE","database":"MariaDB","status":"OK"}]
+HTTP 200
+
+GET /api/v1/persona/mongo
+[{"dni":"123456789","firstName":"Pepe","lastName":"Perez","age":"30","sex":"MALE","database":"MongoDB","status":"OK"},{"dni":"987654321","firstName":"Pepito","lastName":"Perez","age":"null","sex":"MALE","database":"MongoDB","status":"OK"},{"dni":"321654987","firstName":"Pepa","lastName":"Juarez","age":"30","sex":"FEMALE","database":"MongoDB","status":"OK"},{"dni":"147258369","firstName":"Pepita","lastName":"Juarez","age":"10","sex":"FEMALE","database":"MongoDB","status":"OK"},{"dni":"963852741","firstName":"Fede","lastName":"Perez","age":"18","sex":"MALE","database":"MongoDB","status":"OK"}]
+HTTP 200
+
+StackOverflowError en el log del servidor: 0

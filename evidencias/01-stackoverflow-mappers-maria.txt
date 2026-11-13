@@ -1,0 +1,2 @@
+2026-11-11 16:47:15.381 ERROR 8780 --- [nio-3000-exec-6] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Handler d
+
