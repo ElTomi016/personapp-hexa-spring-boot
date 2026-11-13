@@ -1,95 +1,102 @@
 package co.edu.javeriana.as.personapp.terminal.menu;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
-import co.edu.javeriana.as.personapp.common.exceptions.InvalidOptionException;
 import co.edu.javeriana.as.personapp.terminal.adapter.PersonaInputAdapterCli;
-import lombok.extern.slf4j.Slf4j;
+import co.edu.javeriana.as.personapp.terminal.model.PersonaModelCli;
 
-@Slf4j
-public class PersonaMenu {
+public class PersonaMenu extends CrudMenu {
 
-	private static final int OPCION_REGRESAR_MODULOS = 0;
-	private static final int PERSISTENCIA_MARIADB = 1;
-	private static final int PERSISTENCIA_MONGODB = 2;
+	private static final int OPCION_VER_TELEFONOS = 7;
+	private static final int OPCION_VER_ESTUDIOS = 8;
 
-	private static final int OPCION_REGRESAR_MOTOR_PERSISTENCIA = 0;
-	private static final int OPCION_VER_TODO = 1;
-	// mas opciones
+	private final PersonaInputAdapterCli personaInputAdapterCli;
 
-	public void iniciarMenu(PersonaInputAdapterCli personaInputAdapterCli, Scanner keyboard) {
-		boolean isValid = false;
-		do {
-			try {
-				mostrarMenuMotorPersistencia();
-				int opcion = leerOpcion(keyboard);
-				switch (opcion) {
-				case OPCION_REGRESAR_MODULOS:
-					isValid = true;
-					break;
-				case PERSISTENCIA_MARIADB:
-					personaInputAdapterCli.setPersonOutputPortInjection("MARIA");
-					menuOpciones(personaInputAdapterCli,keyboard);
-					break;
-				case PERSISTENCIA_MONGODB:
-					personaInputAdapterCli.setPersonOutputPortInjection("MONGO");
-					menuOpciones(personaInputAdapterCli,keyboard);
-					break;
-				default:
-					log.warn("La opción elegida no es válida.");
-				}
-			}  catch (InvalidOptionException e) {
-				log.warn(e.getMessage());
-			}
-		} while (!isValid);
+	public PersonaMenu(PersonaInputAdapterCli personaInputAdapterCli) {
+		this.personaInputAdapterCli = personaInputAdapterCli;
 	}
 
-	private void menuOpciones(PersonaInputAdapterCli personaInputAdapterCli, Scanner keyboard) {
-		boolean isValid = false;
-		do {
-			try {
-				mostrarMenuOpciones();
-				int opcion = leerOpcion(keyboard);
-				switch (opcion) {
-				case OPCION_REGRESAR_MOTOR_PERSISTENCIA:
-					isValid = true;
-					break;
-				case OPCION_VER_TODO:
-					personaInputAdapterCli.historial();					
-					break;
-				// mas opciones
-				default:
-					log.warn("La opción elegida no es válida.");
-				}
-			} catch (InputMismatchException e) {
-				log.warn("Solo se permiten números.");
-			}
-		} while (!isValid);
+	@Override
+	protected String uno() {
+		return "una persona";
 	}
 
-	private void mostrarMenuOpciones() {
-		System.out.println("----------------------");
-		System.out.println(OPCION_VER_TODO + " para ver todas las personas");
-		// implementar otras opciones
-		System.out.println(OPCION_REGRESAR_MOTOR_PERSISTENCIA + " para regresar");
+	@Override
+	protected String todos() {
+		return "todas las personas";
 	}
 
-	private void mostrarMenuMotorPersistencia() {
-		System.out.println("----------------------");
-		System.out.println(PERSISTENCIA_MARIADB + " para MariaDB");
-		System.out.println(PERSISTENCIA_MONGODB + " para MongoDB");
-		System.out.println(OPCION_REGRESAR_MODULOS + " para regresar");
+	@Override
+	protected void crear(String db, ConsoleInput in) throws Exception {
+		PersonaModelCli model = new PersonaModelCli();
+		model.setCc(in.integer("Cedula (cc)", null, true, true));
+		model.setNombre(in.text("Nombre", null, true));
+		model.setApellido(in.text("Apellido", null, true));
+		model.setGenero(in.gender("Genero", null));
+		model.setEdad(in.integer("Edad (opcional)", null, false, true));
+		System.out.println("Persona creada: " + personaInputAdapterCli.crear(db, model));
 	}
 
-	private int leerOpcion(Scanner keyboard) {
-		try {
-			System.out.print("Ingrese una opción: ");
-			return keyboard.nextInt();
-		} catch (InputMismatchException e) {
-			log.warn("Solo se permiten números.");
-			return leerOpcion(keyboard);
+	@Override
+	protected void editar(String db, ConsoleInput in) throws Exception {
+		Integer cc = in.integer("Cedula de la persona a editar", null, true, true);
+		PersonaModelCli actual = personaInputAdapterCli.buscar(db, cc);
+		in.editHint();
+		PersonaModelCli model = new PersonaModelCli();
+		model.setNombre(in.text("Nombre", actual.getNombre(), true));
+		model.setApellido(in.text("Apellido", actual.getApellido(), true));
+		model.setGenero(in.gender("Genero", actual.getGenero()));
+		model.setEdad(in.integer("Edad (opcional)", actual.getEdad(), false, true));
+		System.out.println("Persona editada: " + personaInputAdapterCli.editar(db, cc, model));
+	}
+
+	@Override
+	protected void eliminar(String db, ConsoleInput in) throws Exception {
+		Integer cc = in.integer("Cedula de la persona a eliminar", null, true, true);
+		PersonaModelCli actual = personaInputAdapterCli.buscar(db, cc);
+		System.out.println(actual);
+		if (!in.confirm("Eliminar tambien sus telefonos y estudios. Confirma")) {
+			System.out.println("Operacion cancelada.");
+			return;
+		}
+		if (Boolean.TRUE.equals(personaInputAdapterCli.eliminar(db, cc))) {
+			System.out.println("Persona " + cc + " eliminada.");
+		} else {
+			System.out.println("No se pudo eliminar la persona " + cc + ".");
 		}
 	}
 
+	@Override
+	protected void listar(String db, ConsoleInput in) throws Exception {
+		imprimirLista(personaInputAdapterCli.historial(db));
+	}
+
+	@Override
+	protected void buscar(String db, ConsoleInput in) throws Exception {
+		Integer cc = in.integer("Cedula de la persona", null, true, true);
+		System.out.println(personaInputAdapterCli.buscar(db, cc));
+	}
+
+	@Override
+	protected void contar(String db, ConsoleInput in) throws Exception {
+		System.out.println("Total de personas: " + personaInputAdapterCli.contar(db));
+	}
+
+	@Override
+	protected void mostrarOpcionesExtra() {
+		System.out.println(OPCION_VER_TELEFONOS + " para ver los telefonos de una persona");
+		System.out.println(OPCION_VER_ESTUDIOS + " para ver los estudios de una persona");
+	}
+
+	@Override
+	protected Accion accionExtra(int opcion, String db, ConsoleInput in) {
+		switch (opcion) {
+		case OPCION_VER_TELEFONOS:
+			return () -> imprimirLista(personaInputAdapterCli.telefonos(db,
+					in.integer("Cedula de la persona", null, true, true)));
+		case OPCION_VER_ESTUDIOS:
+			return () -> imprimirLista(personaInputAdapterCli.estudios(db,
+					in.integer("Cedula de la persona", null, true, true)));
+		default:
+			return null;
+		}
+	}
 }
