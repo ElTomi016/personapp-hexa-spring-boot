@@ -9,7 +9,7 @@ public class Response {
 	private String status;
 	private String description;
 	
-	@JsonFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	private LocalDateTime date;
 
 	public Response(String status, String description, LocalDateTime date) {
@@ -17,6 +17,10 @@ public class Response {
 		this.status = status;
 		this.description = description;
 		this.date = date;
+	}
+
+	public static Response ok(String description) {
+		return new Response("OK", description, LocalDateTime.now());
 	}
 
 	public String getStatus() {
