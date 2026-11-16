@@ -1,5 +1,6 @@
 package co.edu.javeriana.as.personapp.application.usecase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -38,8 +39,10 @@ public class PersonUseCase implements PersonInputPort {
 	@Override
 	public Person edit(Integer identification, Person person) throws NoExistException {
 		Person oldPerson = personPersintence.findById(identification);
-		if (oldPerson != null)
+		if (oldPerson != null) {
+			person.setIdentification(identification);
 			return personPersintence.save(person);
+		}
 		throw new NoExistException(
 				"The person with id " + identification + " does not exist into db, cannot be edited");
 	}
@@ -76,7 +79,7 @@ public class PersonUseCase implements PersonInputPort {
 	public List<Phone> getPhones(Integer identification) throws NoExistException {
 		Person oldPerson = personPersintence.findById(identification);
 		if (oldPerson != null)
-			return oldPerson.getPhoneNumbers();
+			return oldPerson.getPhoneNumbers() != null ? oldPerson.getPhoneNumbers() : new ArrayList<Phone>();
 		throw new NoExistException(
 				"The person with id " + identification + " does not exist into db, cannot be getting phones");
 	}
@@ -85,7 +88,7 @@ public class PersonUseCase implements PersonInputPort {
 	public List<Study> getStudies(Integer identification) throws NoExistException {
 		Person oldPerson = personPersintence.findById(identification);
 		if (oldPerson != null)
-			return oldPerson.getStudies();
+			return oldPerson.getStudies() != null ? oldPerson.getStudies() : new ArrayList<Study>();
 		throw new NoExistException(
 				"The person with id " + identification + " does not exist into db, cannot be getting studies");
 	}
