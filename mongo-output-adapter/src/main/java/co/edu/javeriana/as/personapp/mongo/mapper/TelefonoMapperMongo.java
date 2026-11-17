@@ -10,6 +10,10 @@ import co.edu.javeriana.as.personapp.domain.Phone;
 import co.edu.javeriana.as.personapp.mongo.document.PersonaDocument;
 import co.edu.javeriana.as.personapp.mongo.document.TelefonoDocument;
 
+/**
+ * [Integrante A] Phone (dominio) <-> TelefonoDocument (MongoDB).
+ * BUG ORIGINAL: el dueno se mapeaba completo (con sus telefonos) => recursion infinita.
+ */
 @Mapper
 public class TelefonoMapperMongo {
 
@@ -45,6 +49,7 @@ public class TelefonoMapperMongo {
 		if (duenio == null) {
 			throw new IllegalStateException("The phone has no owner");
 		}
+		// Shallow: sin lista de telefonos, corta el ciclo.
 		return personaMapperMongo.fromAdapterToDomainShallow(duenio);
 	}
 }

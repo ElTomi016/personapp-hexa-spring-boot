@@ -22,6 +22,7 @@
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
             <version>${global.springframework.boot.version}</version>
         </dependency>
+		<!-- [A] Dependencias de test: `common` excluye spring-expression/spring-aop, por eso se agregan aqui. -->
 			<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

@@ -23,6 +23,10 @@ import co.edu.javeriana.as.personapp.mariadb.entity.PersonaEntity;
 import co.edu.javeriana.as.personapp.mariadb.entity.ProfesionEntity;
 import co.edu.javeriana.as.personapp.mariadb.entity.TelefonoEntity;
 
+/**
+ * [Integrante A] Pruebas unitarias de mappers (sin BD). Comprueban ida y vuelta de Persona con
+ * telefonos y estudios SIN StackOverflowError (el bug original) y los casos de genero.
+ */
 class MapperRoundTripMariaTest {
 
 	private PersonaMapperMaria personaMapper = new PersonaMapperMaria();

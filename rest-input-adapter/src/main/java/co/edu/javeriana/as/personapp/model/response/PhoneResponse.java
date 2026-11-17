@@ -4,6 +4,7 @@ import co.edu.javeriana.as.personapp.model.request.PhoneRequest;
 import lombok.Getter;
 import lombok.Setter;
 
+/** [Integrante B] Respuesta JSON de Telefono. */
 public class PhoneResponse extends PhoneRequest {
 
 	@Getter

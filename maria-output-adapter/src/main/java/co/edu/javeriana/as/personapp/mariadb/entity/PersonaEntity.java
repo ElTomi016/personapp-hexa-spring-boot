@@ -42,6 +42,8 @@ public class PersonaEntity implements Serializable {
 	@Column(nullable = false)
 	private Character genero;
 	private Integer edad;
+	// Agregacion: telefonos y estudios viajan dentro de Persona. cascade=ALL => el mapper debe
+	// setear telefono.duenio / estudios.persona (lado propietario), ver PersonaMapperMaria.
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "duenio")
 	private List<TelefonoEntity> telefonos;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")

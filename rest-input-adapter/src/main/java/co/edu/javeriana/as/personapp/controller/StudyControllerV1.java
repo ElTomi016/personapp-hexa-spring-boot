@@ -28,6 +28,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
+/** [Integrante B] Controlador REST /api/v1/estudios/{database}: CRUD de estudios (cc + idProfesion). */
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/estudios")

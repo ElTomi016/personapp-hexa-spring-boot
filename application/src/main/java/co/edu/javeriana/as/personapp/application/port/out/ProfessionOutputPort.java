@@ -5,6 +5,7 @@ import java.util.List;
 import co.edu.javeriana.as.personapp.common.annotations.Port;
 import co.edu.javeriana.as.personapp.domain.Profession;
 
+/** Puerto de SALIDA de Profesion: implementado por professionOutputAdapterMaria/Mongo [Integrante A]. */
 @Port
 public interface ProfessionOutputPort {
 	public Profession save(Profession profession);

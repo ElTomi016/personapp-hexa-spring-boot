@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+/** Modelo de dominio Estudio: une Person + Profession con fecha y universidad. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -3,6 +3,7 @@ package co.edu.javeriana.as.personapp.terminal.menu;
 import co.edu.javeriana.as.personapp.terminal.adapter.PersonaInputAdapterCli;
 import co.edu.javeriana.as.personapp.terminal.model.PersonaModelCli;
 
+/** [Integrante B] Menu CLI de Persona (agrega opciones 7 telefonos y 8 estudios). */
 public class PersonaMenu extends CrudMenu {
 
 	private static final int OPCION_VER_TELEFONOS = 7;

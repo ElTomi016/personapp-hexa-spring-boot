@@ -16,6 +16,11 @@ import co.edu.javeriana.as.personapp.mariadb.entity.EstudiosEntity;
 import co.edu.javeriana.as.personapp.mariadb.entity.PersonaEntity;
 import co.edu.javeriana.as.personapp.mariadb.entity.TelefonoEntity;
 
+/**
+ * [Integrante A] Traduce Person (dominio) <-> PersonaEntity (MariaDB).
+ * Punto central del bug: Persona -> Telefono -> Persona (y Estudios) ciclaba
+ * infinito. Solucion: fromAdapterToDomainShallow (sin listas) para los hijos.
+ */
 @Mapper
 public class PersonaMapperMaria {
 
@@ -43,6 +48,7 @@ public class PersonaMapperMaria {
 		return personaEntity;
 	}
 
+	// [A] Antes guardaba ' ' para OTHER y la columna es ENUM('M','F'): ahora falla con mensaje claro.
 	private Character validateGenero(Gender gender) {
 		if (gender == Gender.FEMALE) {
 			return 'F';
@@ -63,7 +69,7 @@ public class PersonaMapperMaria {
 		}
 		return studies.stream().map(study -> {
 			EstudiosEntity estudio = estudiosMapperMaria.fromDomainToAdapter(study);
-			estudio.setPersona(owner);
+			estudio.setPersona(owner); // lado propietario necesario para el cascade
 			return estudio;
 		}).collect(Collectors.toList());
 	}
@@ -74,7 +80,7 @@ public class PersonaMapperMaria {
 		}
 		return phoneNumbers.stream().map(phone -> {
 			TelefonoEntity telefono = telefonoMapperMaria.fromDomainToAdapter(phone);
-			telefono.setDuenio(owner);
+			telefono.setDuenio(owner); // lado propietario necesario para el cascade
 			return telefono;
 		}).collect(Collectors.toList());
 	}
@@ -100,6 +106,7 @@ public class PersonaMapperMaria {
 		return person;
 	}
 
+	// BUG ORIGINAL: genero.equals('F') lanzaba NullPointerException con genero nulo. Ahora es null-safe.
 	private Gender validateGender(Character genero) {
 		return Character.valueOf('F').equals(genero) ? Gender.FEMALE
 				: Character.valueOf('M').equals(genero) ? Gender.MALE : Gender.OTHER;

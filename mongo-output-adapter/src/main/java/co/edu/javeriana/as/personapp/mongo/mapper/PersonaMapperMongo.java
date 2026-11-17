@@ -16,6 +16,10 @@ import co.edu.javeriana.as.personapp.mongo.document.EstudiosDocument;
 import co.edu.javeriana.as.personapp.mongo.document.PersonaDocument;
 import co.edu.javeriana.as.personapp.mongo.document.TelefonoDocument;
 
+/**
+ * [Integrante A] Person (dominio) <-> PersonaDocument (MongoDB).
+ * Usa fromAdapterToDomainShallow (sin listas) para cortar el ciclo con Telefono/Estudios.
+ */
 @Mapper
 public class PersonaMapperMongo {
 
@@ -43,6 +47,7 @@ public class PersonaMapperMongo {
 		return personaDocument;
 	}
 
+	// BUG ORIGINAL: genero nulo/OTHER no se manejaba. En Mongo OTHER se guarda como " " (no hay ENUM).
 	private String validateGenero(Gender gender) {
 		return gender == Gender.FEMALE ? "F" : gender == Gender.MALE ? "M" : " ";
 	}

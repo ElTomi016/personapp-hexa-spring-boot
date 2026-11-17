@@ -15,6 +15,11 @@ import co.edu.javeriana.as.personapp.mariadb.mapper.TelefonoMapperMaria;
 import co.edu.javeriana.as.personapp.mariadb.repository.TelefonoRepositoryMaria;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * [Integrante A] Adaptador de salida MariaDB para Telefono (PhoneOutputPort).
+ * Qualifier "phoneOutputAdapterMaria". Implementado por nosotros (no existia).
+ * delete devuelve false si el telefono no existe; findById hace una sola consulta.
+ */
 @Slf4j
 @Adapter("phoneOutputAdapterMaria")
 @Transactional

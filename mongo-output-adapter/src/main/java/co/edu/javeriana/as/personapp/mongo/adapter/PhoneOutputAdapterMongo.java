@@ -12,6 +12,7 @@ import co.edu.javeriana.as.personapp.mongo.mapper.TelefonoMapperMongo;
 import co.edu.javeriana.as.personapp.mongo.repository.TelefonoRepositoryMongo;
 import lombok.extern.slf4j.Slf4j;
 
+/** [Integrante A] Adaptador de salida MongoDB para Telefono (qualifier "phoneOutputAdapterMongo"). */
 @Slf4j
 @Adapter("phoneOutputAdapterMongo")
 public class PhoneOutputAdapterMongo implements PhoneOutputPort {
@@ -26,6 +27,7 @@ public class PhoneOutputAdapterMongo implements PhoneOutputPort {
 	public Phone save(Phone phone) {
 		log.debug("Into save on Adapter MongoDB (phone)");
 		telefonoRepositoryMongo.save(telefonoMapperMongo.fromDomainToAdapter(phone));
+		// [A] Se relee para devolver lo realmente guardado.
 		return findById(phone.getNumber());
 	}
 

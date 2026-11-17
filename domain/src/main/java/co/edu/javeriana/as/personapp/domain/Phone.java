@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+/** Modelo de dominio Telefono; owner = Person duena. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+/** [Integrante B] Cuerpo de respuesta de error/estado: status, description y date. */
 public class Response {
 	
 	private String status;

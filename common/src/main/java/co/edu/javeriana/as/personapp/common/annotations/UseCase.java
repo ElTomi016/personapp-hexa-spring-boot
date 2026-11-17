@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
 
+/** Anotacion de estereotipo para casos de uso (componente Spring). */
 @Documented
 @Retention(RUNTIME)
 @Target(TYPE)

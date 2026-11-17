@@ -3,6 +3,7 @@ package co.edu.javeriana.as.personapp.terminal.menu;
 import co.edu.javeriana.as.personapp.terminal.adapter.ProfessionInputAdapterCli;
 import co.edu.javeriana.as.personapp.terminal.model.ProfesionModelCli;
 
+/** [Integrante B] Menu CLI de Profesion. */
 public class ProfesionMenu extends CrudMenu {
 
 	private final ProfessionInputAdapterCli professionInputAdapterCli;

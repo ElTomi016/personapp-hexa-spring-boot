@@ -22,6 +22,8 @@ public class PersonaDocument {
 	private String apellido;
 	private String genero;
 	private Integer edad;
+	// [A] Agregacion: listas de solo lectura resueltas por lookup. No hay cascade: los hijos
+	// se guardan en sus colecciones desde PersonOutputAdapterMongo.
 	@DocumentReference(lazy = true, lookup = "{ 'primaryDuenio' : ?#{#self._id} }")
 	@ReadOnlyProperty
 	private List<TelefonoDocument> telefonos;

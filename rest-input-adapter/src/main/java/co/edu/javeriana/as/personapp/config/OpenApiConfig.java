@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 
+/** [Integrante B] Configuracion de Swagger/OpenAPI (springdoc): http://localhost:3000/swagger-ui.html */
 @Configuration
 public class OpenApiConfig {
 

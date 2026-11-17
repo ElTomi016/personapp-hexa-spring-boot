@@ -11,6 +11,7 @@ import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
 import co.edu.javeriana.as.personapp.domain.Profession;
 import lombok.extern.slf4j.Slf4j;
 
+/** [Integrante B] Casos de uso de Profesion: CRUD sobre ProfessionOutputPort. */
 @Slf4j
 @UseCase
 public class ProfessionUseCase implements ProfessionInputPort {

@@ -9,6 +9,7 @@ import co.edu.javeriana.as.personapp.domain.Person;
 import co.edu.javeriana.as.personapp.domain.Phone;
 import co.edu.javeriana.as.personapp.domain.Study;
 
+/** Puerto de ENTRADA de Persona: lo que los adaptadores REST/CLI pueden pedirle a la aplicacion. */
 @Port
 public interface PersonInputPort {
 	

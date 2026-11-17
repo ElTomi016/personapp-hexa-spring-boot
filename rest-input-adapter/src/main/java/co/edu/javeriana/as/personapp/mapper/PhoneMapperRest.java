@@ -7,6 +7,7 @@ import co.edu.javeriana.as.personapp.domain.Phone;
 import co.edu.javeriana.as.personapp.model.request.PhoneRequest;
 import co.edu.javeriana.as.personapp.model.response.PhoneResponse;
 
+/** [Integrante B] Request/Response REST <-> dominio Phone. */
 @Mapper
 public class PhoneMapperRest {
 

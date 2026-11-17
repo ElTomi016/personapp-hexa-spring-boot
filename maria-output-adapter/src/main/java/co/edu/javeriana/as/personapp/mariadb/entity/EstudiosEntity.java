@@ -34,6 +34,8 @@ public class EstudiosEntity implements Serializable {
 	private Date fecha;
 	@Column(length = 50)
 	private String univer;
+	// insertable/updatable=false: las columnas las escribe la llave compuesta (estudiosEntityPK);
+	// persona y profesion son solo referencias de lectura.
 	@JoinColumn(name = "cc_per", referencedColumnName = "cc", nullable = false, insertable = false, updatable = false)
 	@ManyToOne(optional = false)
 	private PersonaEntity persona;

@@ -1,3 +1,5 @@
+// [Integrante A] DDL MongoDB: usuario persona_db y colecciones (1_ddl.js en Docker).
+// BUG ORIGINAL: usaba la base "prueba_db" y `use`, que mongosh no acepta en scripts.
 db = db.getSiblingDB("admin")
 
 db.createUser({

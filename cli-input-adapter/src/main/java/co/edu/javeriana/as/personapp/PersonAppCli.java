@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import co.edu.javeriana.as.personapp.terminal.menu.MenuPrincipal;
 import lombok.extern.slf4j.Slf4j;
 
+/** [Integrante B] Punto de entrada CLI: arranca Spring y abre el menu principal. */
 @Slf4j
 @SpringBootApplication
 public class PersonAppCli implements CommandLineRunner {

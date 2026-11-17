@@ -7,6 +7,7 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+/** Anotacion de marca para puertos de la arquitectura hexagonal. */
 @Documented
 @Retention(RUNTIME)
 @Target(TYPE)

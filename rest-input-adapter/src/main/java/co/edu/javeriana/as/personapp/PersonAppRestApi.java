@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import lombok.extern.slf4j.Slf4j;
 
+/** [Integrante B] Punto de entrada REST (Spring Boot, puerto 3000). Escanea todos los modulos hexagonales. */
 @Slf4j
 @SpringBootApplication
 public class PersonAppRestApi {

@@ -3,6 +3,7 @@ package co.edu.javeriana.as.personapp.terminal.menu;
 import co.edu.javeriana.as.personapp.terminal.adapter.StudyInputAdapterCli;
 import co.edu.javeriana.as.personapp.terminal.model.EstudioModelCli;
 
+/** [Integrante B] Menu CLI de Estudios. */
 public class EstudioMenu extends CrudMenu {
 
 	private final StudyInputAdapterCli studyInputAdapterCli;

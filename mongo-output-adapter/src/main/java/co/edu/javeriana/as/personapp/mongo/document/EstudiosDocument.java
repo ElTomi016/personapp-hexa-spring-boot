@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class EstudiosDocument {
 	@Id
 	private String id;
+	// Referencias por _id a persona y profesion (coleccion estudios guarda solo los ids).
 	@DocumentReference(lazy = true)
 	private PersonaDocument primaryPersona;
 	@DocumentReference(lazy = true)

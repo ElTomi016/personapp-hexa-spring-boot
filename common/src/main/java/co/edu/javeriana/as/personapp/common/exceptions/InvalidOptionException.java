@@ -1,5 +1,6 @@
 package co.edu.javeriana.as.personapp.common.exceptions;
 
+/** Se lanza cuando la opcion/motor recibido no es valido. */
 public class InvalidOptionException extends Exception{
 
 	/**

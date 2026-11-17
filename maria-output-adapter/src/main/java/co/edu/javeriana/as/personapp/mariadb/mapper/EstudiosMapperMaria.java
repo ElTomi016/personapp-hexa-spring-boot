@@ -16,6 +16,12 @@ import co.edu.javeriana.as.personapp.mariadb.entity.EstudiosEntityPK;
 import co.edu.javeriana.as.personapp.mariadb.entity.PersonaEntity;
 import co.edu.javeriana.as.personapp.mariadb.entity.ProfesionEntity;
 
+/**
+ * [Integrante A] Traduce Study (dominio) <-> EstudiosEntity (MariaDB).
+ * BUG ORIGINAL: fromDomainToAdapter devolvia null y el mapeo a dominio
+ * seguia persona/profesion completas, provocando StackOverflowError (ciclo
+ * Persona -> Estudios -> Persona). Ahora usa conversiones "shallow".
+ */
 @Mapper
 public class EstudiosMapperMaria {
 
@@ -26,12 +32,14 @@ public class EstudiosMapperMaria {
 	private ProfesionMapperMaria profesionMapperMaria;
 
 	public EstudiosEntity fromDomainToAdapter(Study study) {
+		// [A] Validaciones explicitas (antes habia @NonNull sin efecto).
 		Objects.requireNonNull(study, "study is required");
 		Objects.requireNonNull(study.getPerson(), "the study person is required");
 		Objects.requireNonNull(study.getProfession(), "the study profession is required");
 		Integer ccPer = Objects.requireNonNull(study.getPerson().getIdentification(), "person identification is required");
 		Integer idProf = Objects.requireNonNull(study.getProfession().getIdentification(),
 				"profession identification is required");
+		// Llave compuesta (idProf, ccPer) de la tabla estudios.
 		EstudiosEntityPK estudioPK = new EstudiosEntityPK();
 		estudioPK.setCcPer(ccPer);
 		estudioPK.setIdProf(idProf);
@@ -43,7 +51,7 @@ public class EstudiosMapperMaria {
 		estudio.setProfesion(new ProfesionEntity(idProf));
 		estudio.setFecha(validateFecha(study.getGraduationDate()));
 		estudio.setUniver(validateUniver(study.getUniversityName()));
-		return estudio;
+		return estudio; // BUG ORIGINAL: aqui se hacia "return null".
 	}
 
 	private Date validateFecha(LocalDate graduationDate) {
@@ -56,6 +64,7 @@ public class EstudiosMapperMaria {
 		return universityName != null ? universityName : "";
 	}
 
+	/** Entidad -> dominio. Persona y profesion llegan sin listas para no ciclar. */
 	public Study fromAdapterToDomain(EstudiosEntity estudiosEntity) {
 		Study study = new Study();
 		study.setPerson(validatePerson(estudiosEntity));
@@ -66,6 +75,7 @@ public class EstudiosMapperMaria {
 	}
 
 	private Person validatePerson(EstudiosEntity estudiosEntity) {
+		// [A] Shallow: corta el ciclo Persona <-> Estudios (era la causa del StackOverflowError).
 		if (estudiosEntity.getPersona() != null) {
 			return personaMapperMaria.fromAdapterToDomainShallow(estudiosEntity.getPersona());
 		}
@@ -84,6 +94,7 @@ public class EstudiosMapperMaria {
 	}
 
 	private LocalDate validateGraduationDate(Date fecha) {
+		// java.sql.Date evita el error de toInstant() en fechas que vienen de JDBC.
 		return fecha != null ? new java.sql.Date(fecha.getTime()).toLocalDate() : null;
 	}
 

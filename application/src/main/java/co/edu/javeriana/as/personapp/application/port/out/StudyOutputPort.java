@@ -5,6 +5,7 @@ import java.util.List;
 import co.edu.javeriana.as.personapp.common.annotations.Port;
 import co.edu.javeriana.as.personapp.domain.Study;
 
+/** Puerto de SALIDA de Estudios: implementado por studyOutputAdapterMaria/Mongo [Integrante A]. */
 @Port
 public interface StudyOutputPort {
 	public Study save(Study study);

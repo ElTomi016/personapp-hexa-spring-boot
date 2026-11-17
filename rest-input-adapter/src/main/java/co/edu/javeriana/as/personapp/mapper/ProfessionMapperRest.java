@@ -6,6 +6,7 @@ import co.edu.javeriana.as.personapp.domain.Profession;
 import co.edu.javeriana.as.personapp.model.request.ProfessionRequest;
 import co.edu.javeriana.as.personapp.model.response.ProfessionResponse;
 
+/** [Integrante B] Request/Response REST <-> dominio Profession. */
 @Mapper
 public class ProfessionMapperRest {
 

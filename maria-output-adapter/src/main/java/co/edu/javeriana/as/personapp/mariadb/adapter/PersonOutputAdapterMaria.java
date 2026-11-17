@@ -16,6 +16,11 @@ import co.edu.javeriana.as.personapp.mariadb.mapper.PersonaMapperMaria;
 import co.edu.javeriana.as.personapp.mariadb.repository.PersonaRepositoryMaria;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * [Integrante A] Adaptador de salida MariaDB para Persona (puerto PersonOutputPort).
+ * Qualifier "personOutputAdapterMaria". Al ser @Transactional, las listas LAZY de
+ * telefonos/estudios se cargan antes del mapeo => agregacion en Persona.
+ */
 @Slf4j
 @Adapter("personOutputAdapterMaria")
 @Transactional
@@ -30,6 +35,7 @@ public class PersonOutputAdapterMaria implements PersonOutputPort {
 	@Override
 	public Person save(Person person) {
 		log.debug("Into save on Adapter MariaDB");
+		// [A] El mapper ya arma telefonos/estudios; el cascade de JPA los guarda.
 		PersonaEntity persistedPersona = personaRepositoryMaria.save(personaMapperMaria.fromDomainToAdapter(person));
 		return personaMapperMaria.fromAdapterToDomain(persistedPersona);
 	}
@@ -54,6 +60,7 @@ public class PersonOutputAdapterMaria implements PersonOutputPort {
 	@Override
 	public Person findById(Integer identification) {
 		log.debug("Into findById on Adapter MariaDB");
+		// [A] Una sola consulta (el original hacia existsById + findById).
 		return personaRepositoryMaria.findById(identification).map(personaMapperMaria::fromAdapterToDomain)
 				.orElse(null);
 	}

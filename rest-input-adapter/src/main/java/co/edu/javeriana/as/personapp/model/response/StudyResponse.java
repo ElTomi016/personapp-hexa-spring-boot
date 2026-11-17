@@ -4,6 +4,7 @@ import co.edu.javeriana.as.personapp.model.request.StudyRequest;
 import lombok.Getter;
 import lombok.Setter;
 
+/** [Integrante B] Respuesta JSON de Estudios. */
 public class StudyResponse extends StudyRequest {
 
 	@Getter

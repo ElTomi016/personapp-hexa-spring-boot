@@ -13,6 +13,11 @@ import co.edu.javeriana.as.personapp.domain.Study;
 import co.edu.javeriana.as.personapp.mariadb.entity.EstudiosEntity;
 import co.edu.javeriana.as.personapp.mariadb.entity.ProfesionEntity;
 
+/**
+ * [Integrante A] Traduce Profession (dominio) <-> ProfesionEntity (MariaDB).
+ * Usa la version shallow desde EstudiosMapperMaria para no ciclar
+ * Profesion -> Estudios -> Profesion.
+ */
 @Mapper
 public class ProfesionMapperMaria {
 

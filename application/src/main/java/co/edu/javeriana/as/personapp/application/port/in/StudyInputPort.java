@@ -7,6 +7,7 @@ import co.edu.javeriana.as.personapp.common.annotations.Port;
 import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
 import co.edu.javeriana.as.personapp.domain.Study;
 
+/** Puerto de ENTRADA de Estudios (contrato de casos de uso). */
 @Port
 public interface StudyInputPort {
 

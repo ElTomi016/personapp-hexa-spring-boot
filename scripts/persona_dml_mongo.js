@@ -1,3 +1,6 @@
+// [Integrante A] Mismos datos que persona_dml_maria.sql (2_dml.js en Docker).
+// _class = clase Java del documento. telefono._id = numero; estudios._id = "cc-idProf";
+// primaryDuenio / primaryPersona / primaryProfesion guardan el id referenciado.
 db = db.getSiblingDB("persona_db")
 
 db.persona.insertMany([

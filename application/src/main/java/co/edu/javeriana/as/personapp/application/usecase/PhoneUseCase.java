@@ -13,6 +13,7 @@ import co.edu.javeriana.as.personapp.domain.Person;
 import co.edu.javeriana.as.personapp.domain.Phone;
 import lombok.extern.slf4j.Slf4j;
 
+/** [Integrante B] Casos de uso de Telefono: CRUD sobre PhoneOutputPort. */
 @Slf4j
 @UseCase
 public class PhoneUseCase implements PhoneInputPort {

@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+/** Modelo de dominio Profesion. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

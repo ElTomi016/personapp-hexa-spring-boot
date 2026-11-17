@@ -1,4 +1,8 @@
+# [Integrante A] Stack completo. Uso: docker compose up -d --build  (bases + REST)
+#                              docker compose run --build --rm cli  (menu CLI)
+# Los scripts init solo corren con volumen vacio: docker compose down -v para reiniciar datos.
 services:
+  # MariaDB 10.11 en :3307 (host) -> 3306 (contenedor); init con scripts/persona_*_maria.sql.
   mariadb:
     image: mariadb:10.11
     environment:
@@ -14,6 +18,7 @@ services:
       timeout: 5s
       retries: 20
 
+  # MongoDB 6 en :27017; init con scripts/persona_*_mongo.js.
   mongo:
     image: mongo:6
     ports: ["27017:27017"]
@@ -27,6 +32,7 @@ services:
       timeout: 5s
       retries: 20
 
+  # API REST en :3000. Espera a que ambas bases esten healthy; restart por si arranca antes de tiempo.
   rest:
     build:
       context: .
@@ -40,6 +46,7 @@ services:
       mariadb: { condition: service_healthy }
       mongo: { condition: service_healthy }
 
+  # CLI interactivo: solo arranca con el profile "cli" (docker compose run).
   cli:
     build:
       context: .

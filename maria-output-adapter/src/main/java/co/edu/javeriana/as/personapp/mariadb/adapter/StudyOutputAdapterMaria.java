@@ -16,6 +16,11 @@ import co.edu.javeriana.as.personapp.mariadb.mapper.EstudiosMapperMaria;
 import co.edu.javeriana.as.personapp.mariadb.repository.EstudiosRepositoryMaria;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * [Integrante A] Adaptador de salida MariaDB para Estudios (StudyOutputPort).
+ * Qualifier "studyOutputAdapterMaria". Llave compuesta EstudiosEntityPK(idProf, ccPer):
+ * ojo con el orden de los argumentos al construirla.
+ */
 @Slf4j
 @Adapter("studyOutputAdapterMaria")
 @Transactional

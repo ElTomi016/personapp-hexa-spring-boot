@@ -7,6 +7,7 @@ import co.edu.javeriana.as.personapp.common.annotations.Port;
 import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
 import co.edu.javeriana.as.personapp.domain.Profession;
 
+/** Puerto de ENTRADA de Profesion (contrato de casos de uso). */
 @Port
 public interface ProfessionInputPort {
 

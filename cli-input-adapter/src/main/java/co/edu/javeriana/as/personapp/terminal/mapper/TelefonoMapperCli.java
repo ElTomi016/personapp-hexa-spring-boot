@@ -5,6 +5,7 @@ import co.edu.javeriana.as.personapp.domain.Person;
 import co.edu.javeriana.as.personapp.domain.Phone;
 import co.edu.javeriana.as.personapp.terminal.model.TelefonoModelCli;
 
+/** [Integrante B] Modelo de consola <-> dominio Phone. */
 @Mapper
 public class TelefonoMapperCli {
 

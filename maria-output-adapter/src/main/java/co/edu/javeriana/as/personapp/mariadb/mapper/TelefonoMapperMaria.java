@@ -10,6 +10,11 @@ import co.edu.javeriana.as.personapp.domain.Phone;
 import co.edu.javeriana.as.personapp.mariadb.entity.PersonaEntity;
 import co.edu.javeriana.as.personapp.mariadb.entity.TelefonoEntity;
 
+/**
+ * [Integrante A] Traduce Phone (dominio) <-> TelefonoEntity (MariaDB).
+ * BUG ORIGINAL: el dueno se mapeaba con la persona completa (con sus telefonos)
+ * -> recursion infinita. Ahora el dueno se mapea shallow.
+ */
 @Mapper
 public class TelefonoMapperMaria {
 
@@ -43,6 +48,7 @@ public class TelefonoMapperMaria {
 		if (duenio == null) {
 			throw new IllegalStateException("The phone has no owner");
 		}
+		// Shallow: sin lista de telefonos, corta el ciclo.
 		return personaMapperMaria.fromAdapterToDomainShallow(duenio);
 	}
 }

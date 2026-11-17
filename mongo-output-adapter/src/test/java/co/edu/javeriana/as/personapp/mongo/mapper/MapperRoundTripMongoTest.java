@@ -23,6 +23,9 @@ import co.edu.javeriana.as.personapp.mongo.document.PersonaDocument;
 import co.edu.javeriana.as.personapp.mongo.document.ProfesionDocument;
 import co.edu.javeriana.as.personapp.mongo.document.TelefonoDocument;
 
+/**
+ * [Integrante A] Pruebas unitarias de mappers Mongo (sin BD): ida y vuelta sin ciclos infinitos.
+ */
 class MapperRoundTripMongoTest {
 
 	private PersonaMapperMongo personaMapper = new PersonaMapperMongo();

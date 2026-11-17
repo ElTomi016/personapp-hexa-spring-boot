@@ -6,6 +6,7 @@ import co.edu.javeriana.as.personapp.domain.Profession;
 import co.edu.javeriana.as.personapp.domain.Study;
 import co.edu.javeriana.as.personapp.terminal.model.EstudioModelCli;
 
+/** [Integrante B] Modelo de consola <-> dominio Study. */
 @Mapper
 public class EstudioMapperCli {
 

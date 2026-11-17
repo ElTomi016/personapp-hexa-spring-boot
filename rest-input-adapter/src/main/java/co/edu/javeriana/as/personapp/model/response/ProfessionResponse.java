@@ -4,6 +4,7 @@ import co.edu.javeriana.as.personapp.model.request.ProfessionRequest;
 import lombok.Getter;
 import lombok.Setter;
 
+/** [Integrante B] Respuesta JSON de Profesion. */
 public class ProfessionResponse extends ProfessionRequest {
 
 	@Getter

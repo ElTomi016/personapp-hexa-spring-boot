@@ -31,6 +31,7 @@ public class TelefonoEntity implements Serializable {
 	@Column(nullable = false, length = 45)
 	private String oper;
 	@JoinColumn(name = "duenio", referencedColumnName = "cc", nullable = false)
+	// Dueno del telefono (FK cc). Se mapea shallow en TelefonoMapperMaria.
 	@ManyToOne(optional = false)
 	private PersonaEntity duenio;
 

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/** [Integrante B] Modelo de presentacion de Profesion en consola. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

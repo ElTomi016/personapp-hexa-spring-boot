@@ -27,6 +27,7 @@
 			<artifactId>mariadb-java-client</artifactId>
 			<version>${global.mariadb.version}</version>
 		</dependency>
+		<!-- [A] Dependencias de test: `common` excluye spring-expression, por eso se agrega aqui. -->
 			<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

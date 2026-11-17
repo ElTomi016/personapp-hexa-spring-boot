@@ -3,6 +3,7 @@ package co.edu.javeriana.as.personapp.terminal.menu;
 import co.edu.javeriana.as.personapp.terminal.adapter.PhoneInputAdapterCli;
 import co.edu.javeriana.as.personapp.terminal.model.TelefonoModelCli;
 
+/** [Integrante B] Menu CLI de Telefono. */
 public class TelefonoMenu extends CrudMenu {
 
 	private final PhoneInputAdapterCli phoneInputAdapterCli;

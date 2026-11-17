@@ -17,6 +17,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<revision>0.0.1-SNAPSHOT</revision>
 		<global.java.version>11</global.java.version>
+		<!-- [Integrante A] Versiones actualizadas (ver evidencias/versiones-antes-despues.md).
+		     Boot 2.7.18 y no 3.x: Boot 3 exige JDK 17 y jakarta.* -->
 		<global.springframework.boot.version>2.7.18</global.springframework.boot.version>
 		<global.springframework.version>5.3.31</global.springframework.version>
 		<global.springdoc.version>1.8.0</global.springdoc.version>
@@ -49,6 +51,7 @@
 	</modules>
 	<dependencyManagement>
 		<dependencies>
+			<!-- [A] Versiones centralizadas: evita desvios entre modulos (antes cada pom fijaba la suya). -->
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-api</artifactId>
@@ -88,6 +91,7 @@
 	</dependencies>
 	<build>
 		<plugins>
+			<!-- [A] Resuelve ${revision} en los poms instalados; sin esto spring-boot:run desde un modulo fallaba. -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>flatten-maven-plugin</artifactId>

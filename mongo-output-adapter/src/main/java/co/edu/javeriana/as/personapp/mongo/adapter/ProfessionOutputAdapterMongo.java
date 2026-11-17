@@ -16,6 +16,7 @@ import co.edu.javeriana.as.personapp.mongo.mapper.ProfesionMapperMongo;
 import co.edu.javeriana.as.personapp.mongo.repository.ProfesionRepositoryMongo;
 import lombok.extern.slf4j.Slf4j;
 
+/** [Integrante A] Adaptador de salida MongoDB para Profesion (qualifier "professionOutputAdapterMongo"). */
 @Slf4j
 @Adapter("professionOutputAdapterMongo")
 public class ProfessionOutputAdapterMongo implements ProfessionOutputPort {
@@ -33,6 +34,7 @@ public class ProfessionOutputAdapterMongo implements ProfessionOutputPort {
 	public Profession save(Profession profession) {
 		log.debug("Into save on Adapter MongoDB (profession)");
 		profesionRepositoryMongo.save(profesionMapperMongo.fromDomainToAdapter(profession));
+		// [A] Se relee para devolver lo realmente guardado.
 		return findById(profession.getIdentification());
 	}
 

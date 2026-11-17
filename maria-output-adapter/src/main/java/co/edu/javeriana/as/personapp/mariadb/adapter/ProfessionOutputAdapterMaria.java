@@ -15,6 +15,10 @@ import co.edu.javeriana.as.personapp.mariadb.mapper.ProfesionMapperMaria;
 import co.edu.javeriana.as.personapp.mariadb.repository.ProfesionRepositoryMaria;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * [Integrante A] Adaptador de salida MariaDB para Profesion (ProfessionOutputPort).
+ * Qualifier "professionOutputAdapterMaria". Implementado por nosotros (no existia).
+ */
 @Slf4j
 @Adapter("professionOutputAdapterMaria")
 @Transactional

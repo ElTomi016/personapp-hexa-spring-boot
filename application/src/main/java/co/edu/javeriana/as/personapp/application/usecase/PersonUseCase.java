@@ -14,6 +14,7 @@ import co.edu.javeriana.as.personapp.domain.Phone;
 import co.edu.javeriana.as.personapp.domain.Study;
 import lombok.extern.slf4j.Slf4j;
 
+/** [Integrante B] Casos de uso de Persona (puerto de entrada). Orquesta el OutputPort y arma la agregacion de telefonos/estudios. */
 @Slf4j
 @UseCase
 public class PersonUseCase implements PersonInputPort {

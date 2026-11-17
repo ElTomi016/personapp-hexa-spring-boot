@@ -7,6 +7,7 @@ import co.edu.javeriana.as.personapp.domain.Person;
 import co.edu.javeriana.as.personapp.model.request.PersonaRequest;
 import co.edu.javeriana.as.personapp.model.response.PersonaResponse;
 
+/** [Integrante B] Request/Response REST <-> dominio Person. */
 @Mapper
 public class PersonaMapperRest {
 	

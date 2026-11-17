@@ -13,6 +13,7 @@ import co.edu.javeriana.as.personapp.domain.Study;
 import co.edu.javeriana.as.personapp.mongo.document.EstudiosDocument;
 import co.edu.javeriana.as.personapp.mongo.document.ProfesionDocument;
 
+/** [Integrante A] Profession (dominio) <-> ProfesionDocument (MongoDB); hijos en shallow. */
 @Mapper
 public class ProfesionMapperMongo {
 

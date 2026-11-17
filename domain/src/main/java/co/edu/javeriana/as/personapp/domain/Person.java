@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+/** Modelo de dominio Persona (sin dependencias de BD). Agrega phoneNumbers y studies. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

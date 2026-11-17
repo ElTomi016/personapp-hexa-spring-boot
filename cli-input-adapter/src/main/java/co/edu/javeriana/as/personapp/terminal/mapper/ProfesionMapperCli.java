@@ -4,6 +4,7 @@ import co.edu.javeriana.as.personapp.common.annotations.Mapper;
 import co.edu.javeriana.as.personapp.domain.Profession;
 import co.edu.javeriana.as.personapp.terminal.model.ProfesionModelCli;
 
+/** [Integrante B] Modelo de consola <-> dominio Profession. */
 @Mapper
 public class ProfesionMapperCli {
 

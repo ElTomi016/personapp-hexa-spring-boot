@@ -12,6 +12,10 @@ import co.edu.javeriana.as.personapp.mongo.mapper.EstudiosMapperMongo;
 import co.edu.javeriana.as.personapp.mongo.repository.EstudiosRepositoryMongo;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * [Integrante A] Adaptador de salida MongoDB para Estudios (qualifier "studyOutputAdapterMongo").
+ * El id es "cc-idProf" (EstudiosMapperMongo.buildId).
+ */
 @Slf4j
 @Adapter("studyOutputAdapterMongo")
 public class StudyOutputAdapterMongo implements StudyOutputPort {
@@ -26,6 +30,7 @@ public class StudyOutputAdapterMongo implements StudyOutputPort {
 	public Study save(Study study) {
 		log.debug("Into save on Adapter MongoDB (study)");
 		estudiosRepositoryMongo.save(estudiosMapperMongo.fromDomainToAdapter(study));
+		// [A] Se relee para devolver lo realmente guardado.
 		return findById(study.getPerson().getIdentification(), study.getProfession().getIdentification());
 	}
 

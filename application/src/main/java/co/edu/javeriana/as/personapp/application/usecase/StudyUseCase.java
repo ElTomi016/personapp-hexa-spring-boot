@@ -13,6 +13,7 @@ import co.edu.javeriana.as.personapp.common.exceptions.NoExistException;
 import co.edu.javeriana.as.personapp.domain.Study;
 import lombok.extern.slf4j.Slf4j;
 
+/** [Integrante B] Casos de uso de Estudios: CRUD sobre StudyOutputPort (llave persona + profesion). */
 @Slf4j
 @UseCase
 public class StudyUseCase implements StudyInputPort {

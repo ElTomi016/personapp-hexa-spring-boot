@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/** [Integrante B] Cuerpo JSON de entrada para Persona. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

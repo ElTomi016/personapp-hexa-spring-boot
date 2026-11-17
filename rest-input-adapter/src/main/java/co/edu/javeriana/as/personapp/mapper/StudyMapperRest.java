@@ -8,6 +8,7 @@ import co.edu.javeriana.as.personapp.domain.Study;
 import co.edu.javeriana.as.personapp.model.request.StudyRequest;
 import co.edu.javeriana.as.personapp.model.response.StudyResponse;
 
+/** [Integrante B] Request/Response REST <-> dominio Study. */
 @Mapper
 public class StudyMapperRest {
 

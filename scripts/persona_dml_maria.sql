@@ -1,3 +1,5 @@
+-- [Integrante A] Datos de ejemplo (2_dml.sql). Mismos datos que persona_dml_mongo.js.
+-- Orden obligatorio por las FK: persona, profesion, telefono, estudios.
 INSERT INTO 
 	`persona_db`.`persona`(`cc`,`nombre`,`apellido`,`genero`,`edad`) 
 VALUES

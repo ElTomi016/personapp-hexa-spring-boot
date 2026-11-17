@@ -11,6 +11,7 @@ import co.edu.javeriana.as.personapp.terminal.adapter.ProfessionInputAdapterCli;
 import co.edu.javeriana.as.personapp.terminal.adapter.StudyInputAdapterCli;
 import lombok.extern.slf4j.Slf4j;
 
+/** [Integrante B] Menu raiz del CLI: elegir modulo (Persona, Profesion, Telefono, Estudios). */
 @Slf4j
 @Controller
 public class MenuPrincipal {

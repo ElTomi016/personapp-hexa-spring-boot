@@ -35,6 +35,7 @@ public class ProfesionEntity implements Serializable {
 	@Lob
 	@Column(length = 65535)
 	private String des;
+	// Un estudio por cada (persona, profesion); el mapper evita el ciclo con "shallow".
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "profesion")
 	private List<EstudiosEntity> estudios;
 

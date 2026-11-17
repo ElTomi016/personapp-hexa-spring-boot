@@ -13,6 +13,12 @@ import co.edu.javeriana.as.personapp.mongo.document.EstudiosDocument;
 import co.edu.javeriana.as.personapp.mongo.document.PersonaDocument;
 import co.edu.javeriana.as.personapp.mongo.document.ProfesionDocument;
 
+/**
+ * [Integrante A] Study (dominio) <-> EstudiosDocument (MongoDB).
+ * BUG ORIGINAL: fromDomainToAdapter devolvia null y el mapeo inverso ciclaba
+ * Persona -> Estudios -> Persona. Ahora persona/profesion se mapean shallow.
+ * El _id del documento es el texto "cc-idProf" (ver buildId).
+ */
 @Mapper
 public class EstudiosMapperMongo {
 
@@ -39,6 +45,7 @@ public class EstudiosMapperMongo {
 		estudio.setPrimaryProfesion(profesion);
 		estudio.setFecha(study.getGraduationDate());
 		estudio.setUniver(validateUniver(study.getUniversityName()));
+		// BUG ORIGINAL: aqui se hacia "return null".
 		return estudio;
 	}
 
@@ -64,6 +71,7 @@ public class EstudiosMapperMongo {
 		if (persona == null) {
 			throw new IllegalStateException("The study has no person");
 		}
+		// Shallow: corta el ciclo Persona <-> Estudios.
 		return personaMapperMongo.fromAdapterToDomainShallow(persona);
 	}
 

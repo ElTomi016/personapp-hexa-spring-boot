@@ -33,6 +33,10 @@ import co.edu.javeriana.as.personapp.domain.Study;
  * Prueba de integracion contra la base levantada con docker compose (datos de
  * persona_dml). Se ejecuta con: mvn test -Dit=true
  */
+/**
+ * [Integrante A] Pruebas de integracion contra MongoDB real (docker compose up -d mongo).
+ * Solo corren con -Dit=true. Cubren save/find/findById/delete y la agregacion en Persona.
+ */
 @EnabledIfSystemProperty(named = "it", matches = "true")
 @SpringBootTest(classes = ItApplication.class)
 class AdaptersMongoIntegrationTest {

@@ -2,6 +2,7 @@ package co.edu.javeriana.as.personapp.model.response;
 
 import co.edu.javeriana.as.personapp.model.request.PersonaRequest;
 
+/** [Integrante B] Respuesta JSON de Persona (incluye telefonos y estudios). */
 public class PersonaResponse extends PersonaRequest{
 	
 	private String status;

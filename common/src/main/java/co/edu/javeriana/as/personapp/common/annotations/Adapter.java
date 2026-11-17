@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
 
+/** Anotacion de estereotipo para adaptadores (componente Spring, con nombre/qualifier). */
 @Documented
 @Retention(RUNTIME)
 @Target(TYPE)

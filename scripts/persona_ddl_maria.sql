@@ -1,5 +1,7 @@
 -- ADVERTENCIA: este script elimina y recrea el usuario y el esquema persona_db.
 -- Usar solo en ambientes de desarrollo.
+-- [Integrante A] DDL MariaDB. Docker lo ejecuta solo con volumen vacio (1_ddl.sql).
+-- Crea usuario, esquema y las 4 tablas; PK/FK reflejan el modelo ER del taller.
 FLUSH PRIVILEGES;
 --
 DROP USER IF EXISTS 'persona_db'@'%';
@@ -13,6 +15,7 @@ FLUSH PRIVILEGES;
 --
 USE `persona_db`;
 --
+-- Persona. genero solo admite M/F: por eso Gender.OTHER se rechaza al escribir (PersonaMapperMaria).
 CREATE TABLE IF NOT EXISTS `persona_db`.`persona` (
  `cc` INT(15) NOT NULL,
  `nombre` VARCHAR(45) NOT NULL,
@@ -29,6 +32,7 @@ CREATE TABLE IF NOT EXISTS `persona_db`.`profesion` (
  CONSTRAINT `profesion_pk` PRIMARY KEY (`id`)
 );
 --
+-- Telefono: FK duenio -> persona.cc (un telefono pertenece a una persona).
 CREATE TABLE IF NOT EXISTS `persona_db`.`telefono` (
  `num` VARCHAR(15) NOT NULL,
  `oper` VARCHAR(45) NOT NULL,
@@ -37,6 +41,7 @@ CREATE TABLE IF NOT EXISTS `persona_db`.`telefono` (
  CONSTRAINT `telefono_persona_fk` FOREIGN KEY (`duenio`) REFERENCES `persona_db`.`persona` (`cc`)
 );
 --
+-- Estudios: PK compuesta (id_prof, cc_per) -> EstudiosEntityPK en Java.
 CREATE TABLE IF NOT EXISTS `persona_db`.`estudios` (
  `id_prof` INT(6) NOT NULL,
  `cc_per` INT(15) NOT NULL,

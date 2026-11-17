@@ -20,6 +20,11 @@ import co.edu.javeriana.as.personapp.mongo.repository.PersonaRepositoryMongo;
 import co.edu.javeriana.as.personapp.mongo.repository.TelefonoRepositoryMongo;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * [Integrante A] Adaptador de salida MongoDB para Persona (PersonOutputPort).
+ * Qualifier "personOutputAdapterMongo". Agregacion: telefonos y estudios se
+ * resuelven por lookup (@DocumentReference) al leer la persona.
+ */
 @Slf4j
 @Adapter("personOutputAdapterMongo")
 public class PersonOutputAdapterMongo implements PersonOutputPort {
@@ -55,6 +60,7 @@ public class PersonOutputAdapterMongo implements PersonOutputPort {
 		for (EstudiosDocument estudio : document.getEstudios()) {
 			estudiosRepositoryMongo.save(estudio);
 		}
+		// [A] Se relee para devolver la persona ya con sus listas resueltas.
 		return findById(person.getIdentification());
 	}
 
