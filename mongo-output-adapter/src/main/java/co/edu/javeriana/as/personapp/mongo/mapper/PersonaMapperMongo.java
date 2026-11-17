@@ -48,20 +48,24 @@ public class PersonaMapperMongo {
 	}
 
 	// BUG ORIGINAL: genero nulo/OTHER no se manejaba. En Mongo OTHER se guarda como " " (no hay ENUM).
+	/** Gender -> 'F' / 'M' (OTHER se guarda como espacio). */
 	private String validateGenero(Gender gender) {
 		return gender == Gender.FEMALE ? "F" : gender == Gender.MALE ? "M" : " ";
 	}
 
+	/** Edad valida (>= 0) o null. */
 	private Integer validateEdad(Integer age) {
 		return age != null && age >= 0 ? age : null;
 	}
 
+	/** Estudios del dominio -> documentos. */
 	private List<EstudiosDocument> validateEstudios(List<Study> studies) {
 		return studies != null && !studies.isEmpty() ? studies.stream()
 				.map(study -> estudiosMapperMongo.fromDomainToAdapter(study)).collect(Collectors.toList())
 				: new ArrayList<EstudiosDocument>();
 	}
 
+	/** Telefonos del dominio -> documentos. */
 	private List<TelefonoDocument> validateTelefonos(List<Phone> phoneNumbers) {
 		return phoneNumbers != null && !phoneNumbers.isEmpty() ? phoneNumbers.stream()
 				.map(phone -> telefonoMapperMongo.fromDomainToAdapter(phone)).collect(Collectors.toList())
@@ -89,20 +93,24 @@ public class PersonaMapperMongo {
 		return person;
 	}
 
+	/** 'F'/'M' -> Gender; cualquier otro valor es OTHER. */
 	private Gender validateGender(String genero) {
 		return "F".equals(genero) ? Gender.FEMALE : "M".equals(genero) ? Gender.MALE : Gender.OTHER;
 	}
 
+	/** Edad valida (>= 0) o null. */
 	private Integer validateAge(Integer edad) {
 		return edad != null && edad >= 0 ? edad : null;
 	}
 
+	/** Documentos de estudios -> dominio. */
 	private List<Study> validateStudies(List<EstudiosDocument> estudiosDocuments) {
 		return estudiosDocuments != null && !estudiosDocuments.isEmpty() ? estudiosDocuments.stream()
 				.map(estudio -> estudiosMapperMongo.fromAdapterToDomain(estudio)).collect(Collectors.toList())
 				: new ArrayList<Study>();
 	}
 
+	/** Documentos de telefonos -> dominio. */
 	private List<Phone> validatePhones(List<TelefonoDocument> telefonosDocuments) {
 		return telefonosDocuments != null && !telefonosDocuments.isEmpty() ? telefonosDocuments.stream()
 				.map(telefono -> telefonoMapperMongo.fromAdapterToDomain(telefono)).collect(Collectors.toList())

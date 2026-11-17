@@ -10,6 +10,7 @@ import co.edu.javeriana.as.personapp.terminal.model.EstudioModelCli;
 @Mapper
 public class EstudioMapperCli {
 
+	/** Dominio -> modelo de consola (lo que se imprime). */
 	public EstudioModelCli fromDomainToAdapterCli(Study study) {
 		EstudioModelCli estudioModelCli = new EstudioModelCli();
 		estudioModelCli.setCc(study.getPerson() == null ? null : study.getPerson().getIdentification());

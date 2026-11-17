@@ -29,11 +29,13 @@ public class PhoneUseCase implements PhoneInputPort {
 		this.personPersintence = personPersintence;
 	}
 
+	/** Inyecta el OutputPort (adaptador Maria o Mongo) que usara este caso de uso. */
 	@Override
 	public void setPersintence(PhoneOutputPort phonePersintence) {
 		this.phonePersintence = phonePersintence;
 	}
 
+	/** Crea/guarda el registro validando referencias cuando aplica. */
 	@Override
 	public Phone create(Phone phone) throws NoExistException {
 		log.debug("Into create on Application Domain");
@@ -41,6 +43,7 @@ public class PhoneUseCase implements PhoneInputPort {
 		return phonePersintence.save(phone);
 	}
 
+	/** Edita: verifica que exista y lo guarda; NoExistException si no. */
 	@Override
 	public Phone edit(String number, Phone phone) throws NoExistException {
 		Phone oldPhone = phonePersintence.findById(number);
@@ -52,6 +55,7 @@ public class PhoneUseCase implements PhoneInputPort {
 		throw new NoExistException("The phone with number " + number + " does not exist into db, cannot be edited");
 	}
 
+	/** Elimina: verifica que exista y lo borra; NoExistException si no. */
 	@Override
 	public Boolean drop(String number) throws NoExistException {
 		Phone oldPhone = phonePersintence.findById(number);
@@ -60,12 +64,14 @@ public class PhoneUseCase implements PhoneInputPort {
 		throw new NoExistException("The phone with number " + number + " does not exist into db, cannot be dropped");
 	}
 
+	/** Devuelve todos los registros del OutputPort. */
 	@Override
 	public List<Phone> findAll() {
 		log.info("Output: " + phonePersintence.getClass());
 		return phonePersintence.find();
 	}
 
+	/** Busca uno por su llave; NoExistException si no existe. */
 	@Override
 	public Phone findOne(String number) throws NoExistException {
 		Phone oldPhone = phonePersintence.findById(number);
@@ -74,11 +80,13 @@ public class PhoneUseCase implements PhoneInputPort {
 		throw new NoExistException("The phone with number " + number + " does not exist into db, cannot be found");
 	}
 
+	/** Cantidad total de registros. */
 	@Override
 	public Integer count() {
 		return findAll().size();
 	}
 
+	/** Exige que el telefono tenga dueno y que la persona exista. */
 	private void validateOwner(Phone phone) throws NoExistException {
 		Person owner = phone.getOwner();
 		if (owner == null || owner.getIdentification() == null) {

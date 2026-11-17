@@ -47,6 +47,7 @@ public class PersonaInputAdapterCli {
 	@Autowired
 	private EstudioMapperCli estudioMapperCli;
 
+	/** Arma el caso de uso con el OutputPort de la base elegida (Maria o Mongo). */
 	private PersonInputPort personInputPort(DatabaseOption database) {
 		return new PersonUseCase(database == DatabaseOption.MARIA ? personOutputPortMaria : personOutputPortMongo);
 	}
@@ -58,12 +59,14 @@ public class PersonaInputAdapterCli {
 		}
 	}
 
+	/** Lista todo en la base elegida, como modelos de consola. */
 	public List<PersonaModelCli> historial(String dbOption) throws InvalidOptionException {
 		log.info("Into historial PersonaEntity in Input Adapter");
 		return personInputPort(DatabaseResolver.parse(dbOption)).findAll().stream()
 				.map(personaMapperCli::fromDomainToAdapterCli).collect(Collectors.toList());
 	}
 
+	/** Convierte el modelo de consola a dominio y lo guarda. */
 	public PersonaModelCli crear(String dbOption, PersonaModelCli model) throws InvalidOptionException {
 		DatabaseOption database = DatabaseResolver.parse(dbOption);
 		validateGender(database, model);
@@ -71,6 +74,7 @@ public class PersonaInputAdapterCli {
 		return personaMapperCli.fromDomainToAdapterCli(created);
 	}
 
+	/** Reemplaza un registro existente; NoExist si no esta. */
 	public PersonaModelCli editar(String dbOption, Integer cc, PersonaModelCli model)
 			throws InvalidOptionException, NoExistException {
 		DatabaseOption database = DatabaseResolver.parse(dbOption);
@@ -80,24 +84,29 @@ public class PersonaInputAdapterCli {
 		return personaMapperCli.fromDomainToAdapterCli(edited);
 	}
 
+	/** Elimina un registro; NoExist si no existe. */
 	public Boolean eliminar(String dbOption, Integer cc) throws InvalidOptionException, NoExistException {
 		return personInputPort(DatabaseResolver.parse(dbOption)).drop(cc);
 	}
 
+	/** Busca por llave; NoExist si no esta. */
 	public PersonaModelCli buscar(String dbOption, Integer cc) throws InvalidOptionException, NoExistException {
 		return personaMapperCli.fromDomainToAdapterCli(personInputPort(DatabaseResolver.parse(dbOption)).findOne(cc));
 	}
 
+	/** Cuenta los registros de la base elegida. */
 	public Integer contar(String dbOption) throws InvalidOptionException {
 		return personInputPort(DatabaseResolver.parse(dbOption)).count();
 	}
 
+	/** Telefonos de una persona (agregacion). */
 	public List<TelefonoModelCli> telefonos(String dbOption, Integer cc)
 			throws InvalidOptionException, NoExistException {
 		return personInputPort(DatabaseResolver.parse(dbOption)).getPhones(cc).stream()
 				.map(telefonoMapperCli::fromDomainToAdapterCli).collect(Collectors.toList());
 	}
 
+	/** Estudios de una persona (agregacion). */
 	public List<EstudioModelCli> estudios(String dbOption, Integer cc)
 			throws InvalidOptionException, NoExistException {
 		return personInputPort(DatabaseResolver.parse(dbOption)).getStudies(cc).stream()

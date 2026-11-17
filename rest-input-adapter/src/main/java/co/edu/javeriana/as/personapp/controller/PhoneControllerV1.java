@@ -38,6 +38,7 @@ public class PhoneControllerV1 {
 	@Autowired
 	private PhoneInputAdapterRest phoneInputAdapterRest;
 
+	/** GET lista: todos los registros de la base indicada en la ruta. */
 	@Operation(summary = "Listar telefonos", description = "Devuelve todos los telefonos de la base indicada.")
 	@ApiResponse(responseCode = "200", description = "Lista de telefonos")
 	@GetMapping(path = "/{database}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,6 +49,7 @@ public class PhoneControllerV1 {
 		return phoneInputAdapterRest.historial(database);
 	}
 
+	/** POST: crea (o reemplaza) y responde 201. */
 	@Operation(summary = "Crear telefono", description = "Crea un telefono asociado a una persona existente (ownerDni; 404 si no existe). Si el numero ya existe se reemplaza. La base de la ruta manda sobre el campo database del cuerpo.")
 	@ApiResponse(responseCode = "201", description = "Telefono creado")
 	@PostMapping(path = "/{database}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -59,6 +61,7 @@ public class PhoneControllerV1 {
 		return phoneInputAdapterRest.crearTelefono(database, request);
 	}
 
+	/** GET por id: devuelve uno o 404. */
 	@Operation(summary = "Buscar telefono", description = "Devuelve el telefono con el numero indicado.")
 	@ApiResponse(responseCode = "200", description = "Telefono encontrado")
 	@GetMapping(path = "/{database}/{number}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -70,6 +73,7 @@ public class PhoneControllerV1 {
 		return phoneInputAdapterRest.buscarTelefono(database, number);
 	}
 
+	/** PUT: reemplaza el registro o 404. */
 	@Operation(summary = "Editar telefono", description = "Reemplaza los datos del telefono. El numero de la ruta manda sobre el del cuerpo.")
 	@ApiResponse(responseCode = "200", description = "Telefono editado")
 	@PutMapping(path = "/{database}/{number}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -81,6 +85,7 @@ public class PhoneControllerV1 {
 		return phoneInputAdapterRest.editarTelefono(database, number, request);
 	}
 
+	/** DELETE: borra y responde confirmacion o 404. */
 	@Operation(summary = "Eliminar telefono", description = "Elimina el telefono con el numero indicado.")
 	@ApiResponse(responseCode = "200", description = "Telefono eliminado")
 	@DeleteMapping(path = "/{database}/{number}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -95,6 +100,7 @@ public class PhoneControllerV1 {
 		throw new IllegalStateException("The phone with number " + number + " could not be deleted");
 	}
 
+	/** GET /count: cantidad de registros. */
 	@Operation(summary = "Contar telefonos", description = "Devuelve cuantos telefonos hay en la base indicada.")
 	@ApiResponse(responseCode = "200", description = "Cantidad de telefonos")
 	@GetMapping(path = "/{database}/count", produces = MediaType.APPLICATION_JSON_VALUE)

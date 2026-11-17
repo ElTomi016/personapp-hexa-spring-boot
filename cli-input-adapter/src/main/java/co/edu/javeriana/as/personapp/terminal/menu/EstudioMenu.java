@@ -12,16 +12,19 @@ public class EstudioMenu extends CrudMenu {
 		this.studyInputAdapterCli = studyInputAdapterCli;
 	}
 
+	/** Texto en singular usado en los mensajes del menu. */
 	@Override
 	protected String uno() {
 		return "un estudio";
 	}
 
+	/** Texto en plural usado en los mensajes del menu. */
 	@Override
 	protected String todos() {
 		return "todos los estudios";
 	}
 
+	/** Opcion 1: pide los datos por consola y crea el registro. */
 	@Override
 	protected void crear(String db, ConsoleInput in) throws Exception {
 		EstudioModelCli model = new EstudioModelCli();
@@ -32,6 +35,7 @@ public class EstudioMenu extends CrudMenu {
 		System.out.println("Estudio creado: " + studyInputAdapterCli.crear(db, model));
 	}
 
+	/** Opcion 2: pide la llave y los nuevos datos; Enter conserva el valor actual. */
 	@Override
 	protected void editar(String db, ConsoleInput in) throws Exception {
 		Integer cc = in.integer("Cedula de la persona del estudio a editar", null, true, true);
@@ -44,6 +48,7 @@ public class EstudioMenu extends CrudMenu {
 		System.out.println("Estudio editado: " + studyInputAdapterCli.editar(db, cc, idProfesion, model));
 	}
 
+	/** Opcion 3: pide la llave, confirma y elimina. */
 	@Override
 	protected void eliminar(String db, ConsoleInput in) throws Exception {
 		Integer cc = in.integer("Cedula de la persona del estudio a eliminar", null, true, true);
@@ -60,11 +65,13 @@ public class EstudioMenu extends CrudMenu {
 		}
 	}
 
+	/** Opcion 4: imprime todos los registros. */
 	@Override
 	protected void listar(String db, ConsoleInput in) throws Exception {
 		imprimirLista(studyInputAdapterCli.historial(db));
 	}
 
+	/** Opcion 5: busca e imprime un registro por su llave. */
 	@Override
 	protected void buscar(String db, ConsoleInput in) throws Exception {
 		Integer cc = in.integer("Cedula de la persona", null, true, true);
@@ -72,6 +79,7 @@ public class EstudioMenu extends CrudMenu {
 		System.out.println(studyInputAdapterCli.buscar(db, cc, idProfesion));
 	}
 
+	/** Opcion 6: imprime la cantidad de registros. */
 	@Override
 	protected void contar(String db, ConsoleInput in) throws Exception {
 		System.out.println("Total de estudios: " + studyInputAdapterCli.contar(db));

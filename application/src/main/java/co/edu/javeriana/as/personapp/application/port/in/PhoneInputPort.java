@@ -11,17 +11,24 @@ import co.edu.javeriana.as.personapp.domain.Phone;
 @Port
 public interface PhoneInputPort {
 
+	/** Contrato: inyecta el OutputPort (adaptador Maria o Mongo) que usara este caso de uso. */
 	public void setPersintence(PhoneOutputPort phonePersintence);
 
+	/** Contrato: crea/guarda el registro validando referencias cuando aplica. */
 	public Phone create(Phone phone) throws NoExistException;
 
+	/** Contrato: editar un registro existente. */
 	public Phone edit(String number, Phone phone) throws NoExistException;
 
+	/** Contrato: eliminar un registro existente. */
 	public Boolean drop(String number) throws NoExistException;
 
+	/** Contrato: devuelve todos los registros del OutputPort. */
 	public List<Phone> findAll();
 
+	/** Contrato: busca uno por su llave; NoExistException si no existe. */
 	public Phone findOne(String number) throws NoExistException;
 
+	/** Contrato: cantidad total de registros. */
 	public Integer count();
 }

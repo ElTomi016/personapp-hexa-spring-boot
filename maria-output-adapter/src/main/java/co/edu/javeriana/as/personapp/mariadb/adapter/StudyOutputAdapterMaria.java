@@ -32,6 +32,7 @@ public class StudyOutputAdapterMaria implements StudyOutputPort {
 	@Autowired
 	private EstudiosMapperMaria estudiosMapperMaria;
 
+	/** Guarda (crea o reemplaza) y devuelve lo persistido. */
 	@Override
 	public Study save(Study study) {
 		log.debug("Into save on Adapter MariaDB (study)");
@@ -39,6 +40,7 @@ public class StudyOutputAdapterMaria implements StudyOutputPort {
 		return estudiosMapperMaria.fromAdapterToDomain(persisted);
 	}
 
+	/** Borra por (cc persona, id profesion); false si no existe, true si quedo eliminado. */
 	@Override
 	public Boolean delete(Integer personIdentification, Integer professionIdentification) {
 		log.debug("Into delete on Adapter MariaDB (study)");
@@ -50,6 +52,7 @@ public class StudyOutputAdapterMaria implements StudyOutputPort {
 		return !estudiosRepositoryMaria.existsById(pk);
 	}
 
+	/** Lista todos los registros ya mapeados a dominio. */
 	@Override
 	public List<Study> find() {
 		log.debug("Into find on Adapter MariaDB (study)");
@@ -57,6 +60,7 @@ public class StudyOutputAdapterMaria implements StudyOutputPort {
 				.collect(Collectors.toList());
 	}
 
+	/** Busca por (cc persona, id profesion) con una sola consulta; null si no existe. */
 	@Override
 	public Study findById(Integer personIdentification, Integer professionIdentification) {
 		log.debug("Into findById on Adapter MariaDB (study)");

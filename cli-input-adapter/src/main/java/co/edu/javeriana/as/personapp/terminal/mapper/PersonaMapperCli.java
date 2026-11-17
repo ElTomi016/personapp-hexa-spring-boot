@@ -9,6 +9,7 @@ import co.edu.javeriana.as.personapp.terminal.model.PersonaModelCli;
 @Mapper
 public class PersonaMapperCli {
 
+	/** Dominio -> modelo de consola (lo que se imprime). */
 	public PersonaModelCli fromDomainToAdapterCli(Person person) {
 		PersonaModelCli personaModelCli = new PersonaModelCli();
 		personaModelCli.setCc(person.getIdentification());

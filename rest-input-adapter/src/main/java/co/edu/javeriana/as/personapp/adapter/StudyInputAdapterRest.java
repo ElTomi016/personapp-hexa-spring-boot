@@ -57,12 +57,14 @@ public class StudyInputAdapterRest {
 	@Autowired
 	private StudyMapperRest studyMapperRest;
 
+	/** Arma el caso de uso con el OutputPort de la base elegida (Maria o Mongo). */
 	private StudyInputPort studyInputPort(DatabaseOption database) {
 		return database == DatabaseOption.MARIA
 				? new StudyUseCase(studyOutputPortMaria, personOutputPortMaria, professionOutputPortMaria)
 				: new StudyUseCase(studyOutputPortMongo, personOutputPortMongo, professionOutputPortMongo);
 	}
 
+	/** Lista todo en la base elegida y lo convierte a respuesta REST. */
 	public List<StudyResponse> historial(String database) throws InvalidOptionException {
 		log.info("Into historial Study in Input Adapter");
 		DatabaseOption option = DatabaseResolver.parse(database);
@@ -71,6 +73,7 @@ public class StudyInputAdapterRest {
 				.map(study -> studyMapperRest.fromDomainToAdapterRest(study, label)).collect(Collectors.toList());
 	}
 
+	/** Valida el request, lo pasa a dominio y lo guarda via caso de uso (POST). */
 	public StudyResponse crearEstudio(String database, StudyRequest request)
 			throws InvalidOptionException, NoExistException {
 		DatabaseOption option = DatabaseResolver.parse(database);
@@ -78,6 +81,7 @@ public class StudyInputAdapterRest {
 		return studyMapperRest.fromDomainToAdapterRest(created, DatabaseResolver.label(option));
 	}
 
+	/** Valida y reemplaza el registro existente; NoExist si no esta (PUT). */
 	public StudyResponse editarEstudio(String database, Integer cc, Integer professionId, StudyRequest request)
 			throws InvalidOptionException, NoExistException {
 		DatabaseOption option = DatabaseResolver.parse(database);
@@ -88,11 +92,13 @@ public class StudyInputAdapterRest {
 		return studyMapperRest.fromDomainToAdapterRest(edited, DatabaseResolver.label(option));
 	}
 
+	/** Borra el registro; NoExist si no existe (DELETE). */
 	public Boolean eliminarEstudio(String database, Integer cc, Integer professionId)
 			throws InvalidOptionException, NoExistException {
 		return studyInputPort(DatabaseResolver.parse(database)).drop(cc, professionId);
 	}
 
+	/** Busca por id/llave; NoExist si no esta (GET por id). */
 	public StudyResponse buscarEstudio(String database, Integer cc, Integer professionId)
 			throws InvalidOptionException, NoExistException {
 		DatabaseOption option = DatabaseResolver.parse(database);
@@ -100,6 +106,7 @@ public class StudyInputAdapterRest {
 				DatabaseResolver.label(option));
 	}
 
+	/** Cuenta los registros de la base elegida (GET /count). */
 	public Integer contarEstudios(String database) throws InvalidOptionException {
 		return studyInputPort(DatabaseResolver.parse(database)).count();
 	}

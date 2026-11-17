@@ -24,6 +24,7 @@ public class ProfesionMapperMaria {
 	@Autowired
 	private EstudiosMapperMaria estudiosMapperMaria;
 
+	/** Dominio -> entidad JPA de profesion. */
 	public ProfesionEntity fromDomainToAdapter(Profession profession) {
 		Objects.requireNonNull(profession, "profession is required");
 		ProfesionEntity profesionEntity = new ProfesionEntity();
@@ -34,10 +35,12 @@ public class ProfesionMapperMaria {
 		return profesionEntity;
 	}
 
+	/** Descripcion nunca nula (cadena vacia). */
 	private String validateDes(String description) {
 		return description != null ? description : "";
 	}
 
+	/** Convierte estudios del dominio y los enlaza a la profesion. */
 	private List<EstudiosEntity> validateEstudios(List<Study> studies, ProfesionEntity owner) {
 		if (studies == null || studies.isEmpty()) {
 			return new ArrayList<EstudiosEntity>();
@@ -66,10 +69,12 @@ public class ProfesionMapperMaria {
 		return profession;
 	}
 
+	/** Descripcion nunca nula (cadena vacia). */
 	private String validateDescription(String des) {
 		return des != null ? des : "";
 	}
 
+	/** Estudios de la entidad -> dominio; lista vacia si no hay. */
 	private List<Study> validateStudies(List<EstudiosEntity> estudiosEntity) {
 		return estudiosEntity != null && !estudiosEntity.isEmpty() ? estudiosEntity.stream()
 				.map(estudio -> estudiosMapperMaria.fromAdapterToDomain(estudio)).collect(Collectors.toList())

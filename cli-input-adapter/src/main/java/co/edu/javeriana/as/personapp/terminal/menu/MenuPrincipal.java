@@ -37,10 +37,12 @@ public class MenuPrincipal {
 
 	private final Scanner keyboard;
 
+    /** Constructor. */
     public MenuPrincipal() {
         this.keyboard = new Scanner(System.in);
     }
 
+	/** Ciclo del menu raiz: elige el modulo y delega en su menu. */
 	public void inicio() {
 		
 		//Menus
@@ -78,6 +80,7 @@ public class MenuPrincipal {
 		keyboard.close();
 	}
 
+	/** Imprime los modulos disponibles. */
 	private void mostrarMenu() {
 		System.out.println("----------------------");
 		System.out.println(MODULO_PERSONA + " para trabajar con el Modulo de Personas");

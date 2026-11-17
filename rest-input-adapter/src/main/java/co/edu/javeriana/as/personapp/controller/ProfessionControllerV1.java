@@ -38,6 +38,7 @@ public class ProfessionControllerV1 {
 	@Autowired
 	private ProfessionInputAdapterRest professionInputAdapterRest;
 
+	/** GET lista: todos los registros de la base indicada en la ruta. */
 	@Operation(summary = "Listar profesiones", description = "Devuelve todas las profesiones de la base indicada.")
 	@ApiResponse(responseCode = "200", description = "Lista de profesiones")
 	@GetMapping(path = "/{database}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,6 +49,7 @@ public class ProfessionControllerV1 {
 		return professionInputAdapterRest.historial(database);
 	}
 
+	/** POST: crea (o reemplaza) y responde 201. */
 	@Operation(summary = "Crear profesion", description = "Crea una profesion. Si el id ya existe se reemplaza. La base de la ruta manda sobre el campo database del cuerpo.")
 	@ApiResponse(responseCode = "201", description = "Profesion creada")
 	@PostMapping(path = "/{database}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -59,6 +61,7 @@ public class ProfessionControllerV1 {
 		return professionInputAdapterRest.crearProfesion(database, request);
 	}
 
+	/** GET por id: devuelve uno o 404. */
 	@Operation(summary = "Buscar profesion", description = "Devuelve la profesion con el id indicado.")
 	@ApiResponse(responseCode = "200", description = "Profesion encontrada")
 	@GetMapping(path = "/{database}/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -70,6 +73,7 @@ public class ProfessionControllerV1 {
 		return professionInputAdapterRest.buscarProfesion(database, id);
 	}
 
+	/** PUT: reemplaza el registro o 404. */
 	@Operation(summary = "Editar profesion", description = "Reemplaza los datos de la profesion. El id de la ruta manda sobre el del cuerpo.")
 	@ApiResponse(responseCode = "200", description = "Profesion editada")
 	@PutMapping(path = "/{database}/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -81,6 +85,7 @@ public class ProfessionControllerV1 {
 		return professionInputAdapterRest.editarProfesion(database, id, request);
 	}
 
+	/** DELETE: borra y responde confirmacion o 404. */
 	@Operation(summary = "Eliminar profesion", description = "Elimina la profesion con el id indicado.")
 	@ApiResponse(responseCode = "200", description = "Profesion eliminada")
 	@DeleteMapping(path = "/{database}/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -95,6 +100,7 @@ public class ProfessionControllerV1 {
 		throw new IllegalStateException("The profession with id " + id + " could not be deleted");
 	}
 
+	/** GET /count: cantidad de registros. */
 	@Operation(summary = "Contar profesiones", description = "Devuelve cuantas profesiones hay en la base indicada.")
 	@ApiResponse(responseCode = "200", description = "Cantidad de profesiones")
 	@GetMapping(path = "/{database}/count", produces = MediaType.APPLICATION_JSON_VALUE)

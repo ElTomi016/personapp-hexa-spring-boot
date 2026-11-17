@@ -30,14 +30,17 @@ public class ProfessionOutputAdapterMongo implements ProfessionOutputPort {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
+	/** Guarda (crea o reemplaza) y devuelve lo persistido. */
 	@Override
 	public Profession save(Profession profession) {
 		log.debug("Into save on Adapter MongoDB (profession)");
 		profesionRepositoryMongo.save(profesionMapperMongo.fromDomainToAdapter(profession));
 		// [A] Se relee para devolver lo realmente guardado.
+		/** Busca por id con una sola consulta; null si no existe. */
 		return findById(profession.getIdentification());
 	}
 
+	/** Borra por id; false si no existe, true si quedo eliminado. */
 	@Override
 	public Boolean delete(Integer identification) {
 		log.debug("Into delete on Adapter MongoDB (profession)");
@@ -51,6 +54,7 @@ public class ProfessionOutputAdapterMongo implements ProfessionOutputPort {
 		return !profesionRepositoryMongo.existsById(identification);
 	}
 
+	/** Lista todos los registros ya mapeados a dominio. */
 	@Override
 	public List<Profession> find() {
 		log.debug("Into find on Adapter MongoDB (profession)");

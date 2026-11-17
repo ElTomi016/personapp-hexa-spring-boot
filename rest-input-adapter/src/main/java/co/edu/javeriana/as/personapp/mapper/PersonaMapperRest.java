@@ -11,13 +11,16 @@ import co.edu.javeriana.as.personapp.model.response.PersonaResponse;
 @Mapper
 public class PersonaMapperRest {
 	
+	/** Atajo: respuesta marcando base MariaDB. */
 	public PersonaResponse fromDomainToAdapterRestMaria(Person person) {
 		return fromDomainToAdapterRest(person, "MariaDB");
 	}
+	/** Atajo: respuesta marcando base MongoDB. */
 	public PersonaResponse fromDomainToAdapterRestMongo(Person person) {
 		return fromDomainToAdapterRest(person, "MongoDB");
 	}
 	
+	/** Person (dominio) -> JSON de respuesta. */
 	public PersonaResponse fromDomainToAdapterRest(Person person, String database) {
 		return new PersonaResponse(
 				person.getIdentification() == null ? null : person.getIdentification() + "",
@@ -29,6 +32,7 @@ public class PersonaMapperRest {
 				"OK");
 	}
 
+	/** JSON de entrada -> Person, validando campos y genero. */
 	public Person fromAdapterToDomain(PersonaRequest request) throws InvalidOptionException {
 		RequestParser.requireBody(request);
 		Person person = new Person();

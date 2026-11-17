@@ -18,6 +18,7 @@ public class ConsoleInput {
 	public static class EndOfInputException extends RuntimeException {
 		private static final long serialVersionUID = 1L;
 
+		/** Se lanza si se cierra la entrada estandar (Ctrl+D). */
 		public EndOfInputException() {
 			super("Input closed");
 		}
@@ -25,10 +26,12 @@ public class ConsoleInput {
 
 	private final Scanner keyboard;
 
+	/** Envuelve el Scanner de teclado. */
 	public ConsoleInput(Scanner keyboard) {
 		this.keyboard = keyboard;
 	}
 
+	/** Muestra el prompt y lee una linea. */
 	private String readLine(String prompt) {
 		System.out.print(prompt);
 		System.out.flush();
@@ -44,6 +47,7 @@ public class ConsoleInput {
 		return line;
 	}
 
+	/** Arma el prompt mostrando el valor actual entre corchetes. */
 	private String prompt(String label, Object current) {
 		return label + (current != null ? " [" + current + "]" : "") + ": ";
 	}
@@ -61,10 +65,12 @@ public class ConsoleInput {
 		}
 	}
 
+	/** Recuerda que Enter conserva el valor actual. */
 	public void editHint() {
 		System.out.println("Enter conserva el valor actual; '-' deja vacio un campo opcional.");
 	}
 
+	/** Pide texto (obligatorio u opcional). */
 	public String text(String label, String current, boolean required) {
 		while (true) {
 			String line = readLine(prompt(label, current)).trim();
@@ -85,6 +91,7 @@ public class ConsoleInput {
 		}
 	}
 
+	/** Pide un entero, opcionalmente no negativo. */
 	public Integer integer(String label, Integer current, boolean required, boolean nonNegative) {
 		while (true) {
 			String line = readLine(prompt(label, current)).trim();
@@ -114,6 +121,7 @@ public class ConsoleInput {
 		}
 	}
 
+	/** Pide una fecha yyyy-MM-dd. */
 	public LocalDate date(String label, LocalDate current) {
 		while (true) {
 			String line = readLine(prompt(label + " (yyyy-MM-dd, opcional)", current)).trim();
@@ -154,6 +162,7 @@ public class ConsoleInput {
 		}
 	}
 
+	/** Pregunta si/no. */
 	public boolean confirm(String question) {
 		while (true) {
 			String line = readLine(question + " (s/n): ").trim().toLowerCase();

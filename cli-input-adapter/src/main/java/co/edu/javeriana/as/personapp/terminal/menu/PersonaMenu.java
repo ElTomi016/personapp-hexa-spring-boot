@@ -15,16 +15,19 @@ public class PersonaMenu extends CrudMenu {
 		this.personaInputAdapterCli = personaInputAdapterCli;
 	}
 
+	/** Texto en singular usado en los mensajes del menu. */
 	@Override
 	protected String uno() {
 		return "una persona";
 	}
 
+	/** Texto en plural usado en los mensajes del menu. */
 	@Override
 	protected String todos() {
 		return "todas las personas";
 	}
 
+	/** Opcion 1: pide los datos por consola y crea el registro. */
 	@Override
 	protected void crear(String db, ConsoleInput in) throws Exception {
 		PersonaModelCli model = new PersonaModelCli();
@@ -36,6 +39,7 @@ public class PersonaMenu extends CrudMenu {
 		System.out.println("Persona creada: " + personaInputAdapterCli.crear(db, model));
 	}
 
+	/** Opcion 2: pide la llave y los nuevos datos; Enter conserva el valor actual. */
 	@Override
 	protected void editar(String db, ConsoleInput in) throws Exception {
 		Integer cc = in.integer("Cedula de la persona a editar", null, true, true);
@@ -49,6 +53,7 @@ public class PersonaMenu extends CrudMenu {
 		System.out.println("Persona editada: " + personaInputAdapterCli.editar(db, cc, model));
 	}
 
+	/** Opcion 3: pide la llave, confirma y elimina. */
 	@Override
 	protected void eliminar(String db, ConsoleInput in) throws Exception {
 		Integer cc = in.integer("Cedula de la persona a eliminar", null, true, true);
@@ -65,28 +70,33 @@ public class PersonaMenu extends CrudMenu {
 		}
 	}
 
+	/** Opcion 4: imprime todos los registros. */
 	@Override
 	protected void listar(String db, ConsoleInput in) throws Exception {
 		imprimirLista(personaInputAdapterCli.historial(db));
 	}
 
+	/** Opcion 5: busca e imprime un registro por su llave. */
 	@Override
 	protected void buscar(String db, ConsoleInput in) throws Exception {
 		Integer cc = in.integer("Cedula de la persona", null, true, true);
 		System.out.println(personaInputAdapterCli.buscar(db, cc));
 	}
 
+	/** Opcion 6: imprime la cantidad de registros. */
 	@Override
 	protected void contar(String db, ConsoleInput in) throws Exception {
 		System.out.println("Total de personas: " + personaInputAdapterCli.contar(db));
 	}
 
+	/** Imprime las opciones 7 y 8 (telefonos y estudios de una persona). */
 	@Override
 	protected void mostrarOpcionesExtra() {
 		System.out.println(OPCION_VER_TELEFONOS + " para ver los telefonos de una persona");
 		System.out.println(OPCION_VER_ESTUDIOS + " para ver los estudios de una persona");
 	}
 
+	/** Atiende las opciones 7 y 8 (agregacion dentro de Persona). */
 	@Override
 	protected Accion accionExtra(int opcion, String db, ConsoleInput in) {
 		switch (opcion) {

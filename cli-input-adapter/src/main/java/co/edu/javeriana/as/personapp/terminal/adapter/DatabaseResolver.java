@@ -9,9 +9,11 @@ import co.edu.javeriana.as.personapp.common.setup.DatabaseOption;
  */
 public final class DatabaseResolver {
 
+	/** Clase utilitaria: no se instancia. */
 	private DatabaseResolver() {
 	}
 
+	/** Texto 'maria'/'mongo' -> DatabaseOption; error si no es valido. */
 	public static DatabaseOption parse(String database) throws InvalidOptionException {
 		if (database != null) {
 			for (DatabaseOption option : DatabaseOption.values()) {

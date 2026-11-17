@@ -34,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+	/** NoExistException -> 404. */
 	@ExceptionHandler(NoExistException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ApiResponse(responseCode = "404", description = "El registro pedido no existe", content = @Content(schema = @Schema(implementation = Response.class)))
@@ -42,6 +43,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return build(HttpStatus.NOT_FOUND, ex.getMessage());
 	}
 
+	/** InvalidOptionException -> 400. */
 	@ExceptionHandler(InvalidOptionException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ApiResponse(responseCode = "400", description = "Base de datos, identificador o datos de entrada invalidos", content = @Content(schema = @Schema(implementation = Response.class)))
@@ -64,6 +66,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 				"The operation violates a data integrity constraint (duplicated key or missing reference)");
 	}
 
+	/** Cualquier otro error -> 500 sin filtrar detalles. */
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ApiResponse(responseCode = "500", description = "Error interno inesperado", content = @Content(schema = @Schema(implementation = Response.class)))
@@ -72,6 +75,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return build(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error, please try again later");
 	}
 
+	/** JSON mal formado -> 400 con el mismo formato Response. */
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -79,6 +83,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 				status, request);
 	}
 
+	/** Parametro de ruta con tipo invalido -> 400. */
 	@Override
 	protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
 			HttpStatus status, WebRequest request) {
@@ -87,6 +92,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 				status, request);
 	}
 
+	/** Errores internos de Spring MVC con el formato Response. */
 	@Override
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
 			HttpStatus status, WebRequest request) {
@@ -95,6 +101,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return super.handleExceptionInternal(ex, responseBody, headers, status, request);
 	}
 
+	/** Arma el cuerpo de error (status, description, date). */
 	private Response build(HttpStatus status, String description) {
 		return new Response(status.name(), description, LocalDateTime.now());
 	}

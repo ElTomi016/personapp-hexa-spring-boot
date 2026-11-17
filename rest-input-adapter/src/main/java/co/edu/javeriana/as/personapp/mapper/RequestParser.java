@@ -11,15 +11,18 @@ import co.edu.javeriana.as.personapp.common.exceptions.InvalidOptionException;
  */
 public final class RequestParser {
 
+	/** Clase utilitaria: no se instancia. */
 	private RequestParser() {
 	}
 
+	/** Exige que el cuerpo del request exista. */
 	public static void requireBody(Object body) throws InvalidOptionException {
 		if (body == null) {
 			throw new InvalidOptionException("The request body is required");
 		}
 	}
 
+	/** Texto obligatorio, sin espacios sobrantes. */
 	public static String requiredText(String field, String value) throws InvalidOptionException {
 		if (value == null || value.trim().isEmpty()) {
 			throw new InvalidOptionException("The field '" + field + "' is required");
@@ -27,10 +30,12 @@ public final class RequestParser {
 		return value.trim();
 	}
 
+	/** Texto opcional: null si viene vacio. */
 	public static String optionalText(String value) {
 		return value == null || value.trim().isEmpty() ? null : value.trim();
 	}
 
+	/** Entero obligatorio; error si no es numero. */
 	public static Integer requiredInteger(String field, String value) throws InvalidOptionException {
 		String text = requiredText(field, value);
 		try {
@@ -40,6 +45,7 @@ public final class RequestParser {
 		}
 	}
 
+	/** Entero opcional >= 0; null si no viene. */
 	public static Integer optionalNonNegativeInteger(String field, String value) throws InvalidOptionException {
 		if (optionalText(value) == null) {
 			return null;
@@ -51,6 +57,7 @@ public final class RequestParser {
 		return number;
 	}
 
+	/** Fecha opcional ISO (yyyy-MM-dd); null si no viene. */
 	public static LocalDate optionalDate(String field, String value) throws InvalidOptionException {
 		if (optionalText(value) == null) {
 			return null;

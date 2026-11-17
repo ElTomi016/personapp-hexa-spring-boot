@@ -20,6 +20,7 @@ public class ProfesionMapperMongo {
 	@Autowired
 	private EstudiosMapperMongo estudiosMapperMongo;
 
+	/** Dominio -> documento de profesion. */
 	public ProfesionDocument fromDomainToAdapter(Profession profession) {
 		Objects.requireNonNull(profession, "profession is required");
 		ProfesionDocument profesionDocument = new ProfesionDocument();
@@ -30,10 +31,12 @@ public class ProfesionMapperMongo {
 		return profesionDocument;
 	}
 
+	/** Descripcion nunca nula. */
 	private String validateDes(String description) {
 		return description != null ? description : "";
 	}
 
+	/** Estudios del dominio -> documentos. */
 	private List<EstudiosDocument> validateEstudios(List<Study> studies) {
 		return studies != null && !studies.isEmpty() ? studies.stream()
 				.map(study -> estudiosMapperMongo.fromDomainToAdapter(study)).collect(Collectors.toList())
@@ -57,10 +60,12 @@ public class ProfesionMapperMongo {
 		return profession;
 	}
 
+	/** Descripcion nunca nula. */
 	private String validateDescription(String des) {
 		return des != null ? des : "";
 	}
 
+	/** Documentos de estudios -> dominio. */
 	private List<Study> validateStudies(List<EstudiosDocument> estudiosDocument) {
 		return estudiosDocument != null && !estudiosDocument.isEmpty() ? estudiosDocument.stream()
 				.map(estudio -> estudiosMapperMongo.fromAdapterToDomain(estudio)).collect(Collectors.toList())

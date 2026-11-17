@@ -55,18 +55,21 @@ public class StudyInputAdapterCli {
 	@Autowired
 	private EstudioMapperCli estudioMapperCli;
 
+	/** Arma el caso de uso con el OutputPort de la base elegida (Maria o Mongo). */
 	private StudyInputPort studyInputPort(DatabaseOption database) {
 		return database == DatabaseOption.MARIA
 				? new StudyUseCase(studyOutputPortMaria, personOutputPortMaria, professionOutputPortMaria)
 				: new StudyUseCase(studyOutputPortMongo, personOutputPortMongo, professionOutputPortMongo);
 	}
 
+	/** Lista todo en la base elegida, como modelos de consola. */
 	public List<EstudioModelCli> historial(String dbOption) throws InvalidOptionException {
 		log.info("Into historial Study in Input Adapter");
 		return studyInputPort(DatabaseResolver.parse(dbOption)).findAll().stream()
 				.map(estudioMapperCli::fromDomainToAdapterCli).collect(Collectors.toList());
 	}
 
+	/** Convierte el modelo de consola a dominio y lo guarda. */
 	public EstudioModelCli crear(String dbOption, EstudioModelCli model)
 			throws InvalidOptionException, NoExistException {
 		Study created = studyInputPort(DatabaseResolver.parse(dbOption))
@@ -74,6 +77,7 @@ public class StudyInputAdapterCli {
 		return estudioMapperCli.fromDomainToAdapterCli(created);
 	}
 
+	/** Reemplaza un registro existente; NoExist si no esta. */
 	public EstudioModelCli editar(String dbOption, Integer cc, Integer idProfesion, EstudioModelCli model)
 			throws InvalidOptionException, NoExistException {
 		model.setCc(cc);
@@ -83,17 +87,20 @@ public class StudyInputAdapterCli {
 		return estudioMapperCli.fromDomainToAdapterCli(edited);
 	}
 
+	/** Elimina un registro; NoExist si no existe. */
 	public Boolean eliminar(String dbOption, Integer cc, Integer idProfesion)
 			throws InvalidOptionException, NoExistException {
 		return studyInputPort(DatabaseResolver.parse(dbOption)).drop(cc, idProfesion);
 	}
 
+	/** Busca por llave; NoExist si no esta. */
 	public EstudioModelCli buscar(String dbOption, Integer cc, Integer idProfesion)
 			throws InvalidOptionException, NoExistException {
 		return estudioMapperCli
 				.fromDomainToAdapterCli(studyInputPort(DatabaseResolver.parse(dbOption)).findOne(cc, idProfesion));
 	}
 
+	/** Cuenta los registros de la base elegida. */
 	public Integer contar(String dbOption) throws InvalidOptionException {
 		return studyInputPort(DatabaseResolver.parse(dbOption)).count();
 	}

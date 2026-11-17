@@ -50,6 +50,7 @@ public class PersonaInputAdapterRest {
 	@Autowired
 	private StudyMapperRest studyMapperRest;
 
+	/** Arma el caso de uso con el OutputPort de la base elegida (Maria o Mongo). */
 	private PersonInputPort personInputPort(DatabaseOption database) {
 		return new PersonUseCase(database == DatabaseOption.MARIA ? personOutputPortMaria : personOutputPortMongo);
 	}
@@ -61,6 +62,7 @@ public class PersonaInputAdapterRest {
 		}
 	}
 
+	/** Lista todo en la base elegida y lo convierte a respuesta REST. */
 	public List<PersonaResponse> historial(String database) throws InvalidOptionException {
 		log.info("Into historial PersonaEntity in Input Adapter");
 		DatabaseOption option = DatabaseResolver.parse(database);
@@ -69,6 +71,7 @@ public class PersonaInputAdapterRest {
 				.map(person -> personaMapperRest.fromDomainToAdapterRest(person, label)).collect(Collectors.toList());
 	}
 
+	/** Valida el request, lo pasa a dominio y lo guarda via caso de uso (POST). */
 	public PersonaResponse crearPersona(String database, PersonaRequest request) throws InvalidOptionException {
 		DatabaseOption option = DatabaseResolver.parse(database);
 		Person person = personaMapperRest.fromAdapterToDomain(request);
@@ -77,6 +80,7 @@ public class PersonaInputAdapterRest {
 		return personaMapperRest.fromDomainToAdapterRest(created, DatabaseResolver.label(option));
 	}
 
+	/** Valida y reemplaza el registro existente; NoExist si no esta (PUT). */
 	public PersonaResponse editarPersona(String database, Integer cc, PersonaRequest request)
 			throws InvalidOptionException, NoExistException {
 		DatabaseOption option = DatabaseResolver.parse(database);
@@ -88,20 +92,24 @@ public class PersonaInputAdapterRest {
 		return personaMapperRest.fromDomainToAdapterRest(edited, DatabaseResolver.label(option));
 	}
 
+	/** Borra el registro; NoExist si no existe (DELETE). */
 	public Boolean eliminarPersona(String database, Integer cc) throws InvalidOptionException, NoExistException {
 		return personInputPort(DatabaseResolver.parse(database)).drop(cc);
 	}
 
+	/** Busca por id/llave; NoExist si no esta (GET por id). */
 	public PersonaResponse buscarPersona(String database, Integer cc) throws InvalidOptionException, NoExistException {
 		DatabaseOption option = DatabaseResolver.parse(database);
 		return personaMapperRest.fromDomainToAdapterRest(personInputPort(option).findOne(cc),
 				DatabaseResolver.label(option));
 	}
 
+	/** Cuenta los registros de la base elegida (GET /count). */
 	public Integer contarPersonas(String database) throws InvalidOptionException {
 		return personInputPort(DatabaseResolver.parse(database)).count();
 	}
 
+	/** Telefonos de una persona (agregacion dentro de Persona). */
 	public List<PhoneResponse> telefonosDePersona(String database, Integer cc)
 			throws InvalidOptionException, NoExistException {
 		DatabaseOption option = DatabaseResolver.parse(database);
@@ -110,6 +118,7 @@ public class PersonaInputAdapterRest {
 				.map(phone -> phoneMapperRest.fromDomainToAdapterRest(phone, label)).collect(Collectors.toList());
 	}
 
+	/** Estudios de una persona (agregacion dentro de Persona). */
 	public List<StudyResponse> estudiosDePersona(String database, Integer cc)
 			throws InvalidOptionException, NoExistException {
 		DatabaseOption option = DatabaseResolver.parse(database);

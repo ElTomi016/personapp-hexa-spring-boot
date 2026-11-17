@@ -39,11 +39,13 @@ public class ProfessionInputAdapterRest {
 	@Autowired
 	private ProfessionMapperRest professionMapperRest;
 
+	/** Arma el caso de uso con el OutputPort de la base elegida (Maria o Mongo). */
 	private ProfessionInputPort professionInputPort(DatabaseOption database) {
 		return new ProfessionUseCase(
 				database == DatabaseOption.MARIA ? professionOutputPortMaria : professionOutputPortMongo);
 	}
 
+	/** Lista todo en la base elegida y lo convierte a respuesta REST. */
 	public List<ProfessionResponse> historial(String database) throws InvalidOptionException {
 		log.info("Into historial Profession in Input Adapter");
 		DatabaseOption option = DatabaseResolver.parse(database);
@@ -53,6 +55,7 @@ public class ProfessionInputAdapterRest {
 				.collect(Collectors.toList());
 	}
 
+	/** Valida el request, lo pasa a dominio y lo guarda via caso de uso (POST). */
 	public ProfessionResponse crearProfesion(String database, ProfessionRequest request)
 			throws InvalidOptionException {
 		DatabaseOption option = DatabaseResolver.parse(database);
@@ -61,6 +64,7 @@ public class ProfessionInputAdapterRest {
 		return professionMapperRest.fromDomainToAdapterRest(created, DatabaseResolver.label(option));
 	}
 
+	/** Valida y reemplaza el registro existente; NoExist si no esta (PUT). */
 	public ProfessionResponse editarProfesion(String database, Integer id, ProfessionRequest request)
 			throws InvalidOptionException, NoExistException {
 		DatabaseOption option = DatabaseResolver.parse(database);
@@ -70,10 +74,12 @@ public class ProfessionInputAdapterRest {
 		return professionMapperRest.fromDomainToAdapterRest(edited, DatabaseResolver.label(option));
 	}
 
+	/** Borra el registro; NoExist si no existe (DELETE). */
 	public Boolean eliminarProfesion(String database, Integer id) throws InvalidOptionException, NoExistException {
 		return professionInputPort(DatabaseResolver.parse(database)).drop(id);
 	}
 
+	/** Busca por id/llave; NoExist si no esta (GET por id). */
 	public ProfessionResponse buscarProfesion(String database, Integer id)
 			throws InvalidOptionException, NoExistException {
 		DatabaseOption option = DatabaseResolver.parse(database);
@@ -81,6 +87,7 @@ public class ProfessionInputAdapterRest {
 				DatabaseResolver.label(option));
 	}
 
+	/** Cuenta los registros de la base elegida (GET /count). */
 	public Integer contarProfesiones(String database) throws InvalidOptionException {
 		return professionInputPort(DatabaseResolver.parse(database)).count();
 	}

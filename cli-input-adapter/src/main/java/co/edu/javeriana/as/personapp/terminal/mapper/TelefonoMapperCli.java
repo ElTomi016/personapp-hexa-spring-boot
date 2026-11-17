@@ -9,6 +9,7 @@ import co.edu.javeriana.as.personapp.terminal.model.TelefonoModelCli;
 @Mapper
 public class TelefonoMapperCli {
 
+	/** Dominio -> modelo de consola (lo que se imprime). */
 	public TelefonoModelCli fromDomainToAdapterCli(Phone phone) {
 		TelefonoModelCli telefonoModelCli = new TelefonoModelCli();
 		telefonoModelCli.setNumero(phone.getNumber());

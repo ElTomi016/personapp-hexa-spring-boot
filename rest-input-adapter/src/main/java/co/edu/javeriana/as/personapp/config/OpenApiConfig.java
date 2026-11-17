@@ -10,6 +10,7 @@ import io.swagger.v3.oas.models.info.Info;
 @Configuration
 public class OpenApiConfig {
 
+	/** Titulo y descripcion que se muestran en Swagger. */
 	@Bean
 	public OpenAPI personAppOpenAPI() {
 		return new OpenAPI().info(new Info()

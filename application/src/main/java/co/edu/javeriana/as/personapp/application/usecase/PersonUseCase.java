@@ -26,17 +26,20 @@ public class PersonUseCase implements PersonInputPort {
 		this.personPersintence=personPersintence;
 	}
 	
+	/** Inyecta el OutputPort (adaptador Maria o Mongo) que usara este caso de uso. */
 	@Override
 	public void setPersintence(PersonOutputPort personPersintence) {
 		this.personPersintence=personPersintence;
 	}
 
+	/** Crea/guarda el registro validando referencias cuando aplica. */
 	@Override
 	public Person create(Person person) {
 		log.debug("Into create on Application Domain");
 		return personPersintence.save(person);
 	}
 
+	/** Edita: verifica que exista y lo guarda; NoExistException si no. */
 	@Override
 	public Person edit(Integer identification, Person person) throws NoExistException {
 		Person oldPerson = personPersintence.findById(identification);
@@ -48,6 +51,7 @@ public class PersonUseCase implements PersonInputPort {
 				"The person with id " + identification + " does not exist into db, cannot be edited");
 	}
 
+	/** Elimina: verifica que exista y lo borra; NoExistException si no. */
 	@Override
 	public Boolean drop(Integer identification) throws NoExistException {
 		Person oldPerson = personPersintence.findById(identification);
@@ -57,12 +61,14 @@ public class PersonUseCase implements PersonInputPort {
 				"The person with id " + identification + " does not exist into db, cannot be dropped");
 	}
 
+	/** Devuelve todos los registros del OutputPort. */
 	@Override
 	public List<Person> findAll() {
 		log.info("Output: " + personPersintence.getClass());
 		return personPersintence.find();
 	}
 
+	/** Busca uno por su llave; NoExistException si no existe. */
 	@Override
 	public Person findOne(Integer identification) throws NoExistException {
 		Person oldPerson = personPersintence.findById(identification);
@@ -71,11 +77,13 @@ public class PersonUseCase implements PersonInputPort {
 		throw new NoExistException("The person with id " + identification + " does not exist into db, cannot be found");
 	}
 
+	/** Cantidad total de registros. */
 	@Override
 	public Integer count() {
 		return findAll().size();
 	}
 
+	/** Telefonos de la persona (ya cargados por el adaptador de salida). */
 	@Override
 	public List<Phone> getPhones(Integer identification) throws NoExistException {
 		Person oldPerson = personPersintence.findById(identification);
@@ -85,6 +93,7 @@ public class PersonUseCase implements PersonInputPort {
 				"The person with id " + identification + " does not exist into db, cannot be getting phones");
 	}
 
+	/** Estudios de la persona (ya cargados por el adaptador de salida). */
 	@Override
 	public List<Study> getStudies(Integer identification) throws NoExistException {
 		Person oldPerson = personPersintence.findById(identification);

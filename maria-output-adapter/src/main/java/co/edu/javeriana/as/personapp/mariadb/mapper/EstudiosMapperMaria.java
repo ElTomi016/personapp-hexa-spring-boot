@@ -31,6 +31,7 @@ public class EstudiosMapperMaria {
 	@Autowired
 	private ProfesionMapperMaria profesionMapperMaria;
 
+	/** Dominio -> entidad con llave compuesta (idProf, ccPer). */
 	public EstudiosEntity fromDomainToAdapter(Study study) {
 		// [A] Validaciones explicitas (antes habia @NonNull sin efecto).
 		Objects.requireNonNull(study, "study is required");
@@ -54,12 +55,14 @@ public class EstudiosMapperMaria {
 		return estudio; // BUG ORIGINAL: aqui se hacia "return null".
 	}
 
+	/** LocalDate -> java.util.Date; null si no hay fecha. */
 	private Date validateFecha(LocalDate graduationDate) {
 		return graduationDate != null
 				? Date.from(graduationDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())
 				: null;
 	}
 
+	/** Universidad nunca nula. */
 	private String validateUniver(String universityName) {
 		return universityName != null ? universityName : "";
 	}
@@ -74,6 +77,7 @@ public class EstudiosMapperMaria {
 		return study;
 	}
 
+	/** Persona del estudio en version shallow (o solo con cc). */
 	private Person validatePerson(EstudiosEntity estudiosEntity) {
 		// [A] Shallow: corta el ciclo Persona <-> Estudios (era la causa del StackOverflowError).
 		if (estudiosEntity.getPersona() != null) {
@@ -84,6 +88,7 @@ public class EstudiosMapperMaria {
 		return person;
 	}
 
+	/** Profesion del estudio en version shallow (o solo con id). */
 	private Profession validateProfession(EstudiosEntity estudiosEntity) {
 		if (estudiosEntity.getProfesion() != null) {
 			return profesionMapperMaria.fromAdapterToDomainShallow(estudiosEntity.getProfesion());
@@ -93,11 +98,13 @@ public class EstudiosMapperMaria {
 		return profession;
 	}
 
+	/** Date -> LocalDate (via java.sql.Date). */
 	private LocalDate validateGraduationDate(Date fecha) {
 		// java.sql.Date evita el error de toInstant() en fechas que vienen de JDBC.
 		return fecha != null ? new java.sql.Date(fecha.getTime()).toLocalDate() : null;
 	}
 
+	/** Universidad nunca nula. */
 	private String validateUniversityName(String univer) {
 		return univer != null ? univer : "";
 	}

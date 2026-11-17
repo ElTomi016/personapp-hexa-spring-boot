@@ -32,6 +32,7 @@ public class PersonOutputAdapterMaria implements PersonOutputPort {
 	@Autowired
 	private PersonaMapperMaria personaMapperMaria;
 
+	/** Guarda (crea o reemplaza) y devuelve lo persistido. */
 	@Override
 	public Person save(Person person) {
 		log.debug("Into save on Adapter MariaDB");
@@ -40,6 +41,7 @@ public class PersonOutputAdapterMaria implements PersonOutputPort {
 		return personaMapperMaria.fromAdapterToDomain(persistedPersona);
 	}
 
+	/** Borra por cc; false si no existe, true si quedo eliminado. */
 	@Override
 	public Boolean delete(Integer identification) {
 		log.debug("Into delete on Adapter MariaDB");
@@ -50,6 +52,7 @@ public class PersonOutputAdapterMaria implements PersonOutputPort {
 		return !personaRepositoryMaria.existsById(identification);
 	}
 
+	/** Lista todos los registros ya mapeados a dominio. */
 	@Override
 	public List<Person> find() {
 		log.debug("Into find on Adapter MariaDB");
@@ -57,6 +60,7 @@ public class PersonOutputAdapterMaria implements PersonOutputPort {
 				.collect(Collectors.toList());
 	}
 
+	/** Busca por cc con una sola consulta; null si no existe. */
 	@Override
 	public Person findById(Integer identification) {
 		log.debug("Into findById on Adapter MariaDB");

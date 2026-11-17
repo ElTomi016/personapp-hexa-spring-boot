@@ -12,16 +12,19 @@ public class ProfesionMenu extends CrudMenu {
 		this.professionInputAdapterCli = professionInputAdapterCli;
 	}
 
+	/** Texto en singular usado en los mensajes del menu. */
 	@Override
 	protected String uno() {
 		return "una profesion";
 	}
 
+	/** Texto en plural usado en los mensajes del menu. */
 	@Override
 	protected String todos() {
 		return "todas las profesiones";
 	}
 
+	/** Opcion 1: pide los datos por consola y crea el registro. */
 	@Override
 	protected void crear(String db, ConsoleInput in) throws Exception {
 		ProfesionModelCli model = new ProfesionModelCli();
@@ -31,6 +34,7 @@ public class ProfesionMenu extends CrudMenu {
 		System.out.println("Profesion creada: " + professionInputAdapterCli.crear(db, model));
 	}
 
+	/** Opcion 2: pide la llave y los nuevos datos; Enter conserva el valor actual. */
 	@Override
 	protected void editar(String db, ConsoleInput in) throws Exception {
 		Integer id = in.integer("Id de la profesion a editar", null, true, true);
@@ -42,6 +46,7 @@ public class ProfesionMenu extends CrudMenu {
 		System.out.println("Profesion editada: " + professionInputAdapterCli.editar(db, id, model));
 	}
 
+	/** Opcion 3: pide la llave, confirma y elimina. */
 	@Override
 	protected void eliminar(String db, ConsoleInput in) throws Exception {
 		Integer id = in.integer("Id de la profesion a eliminar", null, true, true);
@@ -58,17 +63,20 @@ public class ProfesionMenu extends CrudMenu {
 		}
 	}
 
+	/** Opcion 4: imprime todos los registros. */
 	@Override
 	protected void listar(String db, ConsoleInput in) throws Exception {
 		imprimirLista(professionInputAdapterCli.historial(db));
 	}
 
+	/** Opcion 5: busca e imprime un registro por su llave. */
 	@Override
 	protected void buscar(String db, ConsoleInput in) throws Exception {
 		Integer id = in.integer("Id de la profesion", null, true, true);
 		System.out.println(professionInputAdapterCli.buscar(db, id));
 	}
 
+	/** Opcion 6: imprime la cantidad de registros. */
 	@Override
 	protected void contar(String db, ConsoleInput in) throws Exception {
 		System.out.println("Total de profesiones: " + professionInputAdapterCli.contar(db));

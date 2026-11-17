@@ -62,6 +62,7 @@ public abstract class CrudMenu {
 		return null;
 	}
 
+	/** Imprime una lista de modelos, uno por linea. */
 	protected <T> void imprimirLista(List<T> items) {
 		if (items.isEmpty()) {
 			System.out.println("No hay registros.");
@@ -69,6 +70,7 @@ public abstract class CrudMenu {
 		items.forEach(item -> System.out.println(item));
 	}
 
+	/** Ciclo del modulo: elegir motor (Maria/Mongo) y luego operar. */
 	public void iniciarMenu(Scanner keyboard) {
 		ConsoleInput in = new ConsoleInput(keyboard);
 		boolean isValid = false;
@@ -91,6 +93,7 @@ public abstract class CrudMenu {
 		} while (!isValid);
 	}
 
+	/** Ciclo de opciones CRUD hasta elegir 0 (volver). */
 	private void menuOpciones(String db, ConsoleInput in) {
 		boolean isValid = false;
 		do {
@@ -144,6 +147,7 @@ public abstract class CrudMenu {
 		}
 	}
 
+	/** Imprime las opciones CRUD. */
 	private void mostrarMenuOpciones() {
 		System.out.println("----------------------");
 		System.out.println(OPCION_CREAR + " para crear " + uno());
@@ -156,6 +160,7 @@ public abstract class CrudMenu {
 		System.out.println(OPCION_REGRESAR_MOTOR_PERSISTENCIA + " para regresar");
 	}
 
+	/** Imprime la eleccion de motor: 1 MariaDB, 2 MongoDB. */
 	private void mostrarMenuMotorPersistencia() {
 		System.out.println("----------------------");
 		System.out.println(PERSISTENCIA_MARIADB + " para MariaDB");

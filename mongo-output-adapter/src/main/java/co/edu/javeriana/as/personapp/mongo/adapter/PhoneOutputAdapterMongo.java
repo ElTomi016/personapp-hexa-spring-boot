@@ -23,14 +23,17 @@ public class PhoneOutputAdapterMongo implements PhoneOutputPort {
 	@Autowired
 	private TelefonoMapperMongo telefonoMapperMongo;
 
+	/** Guarda (crea o reemplaza) y devuelve lo persistido. */
 	@Override
 	public Phone save(Phone phone) {
 		log.debug("Into save on Adapter MongoDB (phone)");
 		telefonoRepositoryMongo.save(telefonoMapperMongo.fromDomainToAdapter(phone));
 		// [A] Se relee para devolver lo realmente guardado.
+		/** Busca por numero con una sola consulta; null si no existe. */
 		return findById(phone.getNumber());
 	}
 
+	/** Borra por numero; false si no existe, true si quedo eliminado. */
 	@Override
 	public Boolean delete(String number) {
 		log.debug("Into delete on Adapter MongoDB (phone)");
@@ -41,6 +44,7 @@ public class PhoneOutputAdapterMongo implements PhoneOutputPort {
 		return !telefonoRepositoryMongo.existsById(number);
 	}
 
+	/** Lista todos los registros ya mapeados a dominio. */
 	@Override
 	public List<Phone> find() {
 		log.debug("Into find on Adapter MongoDB (phone)");

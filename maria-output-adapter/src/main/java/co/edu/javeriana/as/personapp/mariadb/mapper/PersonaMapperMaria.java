@@ -59,10 +59,12 @@ public class PersonaMapperMaria {
 		throw new IllegalArgumentException("Gender " + gender + " is not supported by MariaDB (only M or F)");
 	}
 
+	/** Edad valida (>= 0) o null. */
 	private Integer validateEdad(Integer age) {
 		return age != null && age >= 0 ? age : null;
 	}
 
+	/** Convierte estudios del dominio y enlaza cada uno a la persona duena. */
 	private List<EstudiosEntity> validateEstudios(List<Study> studies, PersonaEntity owner) {
 		if (studies == null || studies.isEmpty()) {
 			return new ArrayList<EstudiosEntity>();
@@ -74,6 +76,7 @@ public class PersonaMapperMaria {
 		}).collect(Collectors.toList());
 	}
 
+	/** Convierte telefonos del dominio y enlaza cada uno a la persona duena. */
 	private List<TelefonoEntity> validateTelefonos(List<Phone> phoneNumbers, PersonaEntity owner) {
 		if (phoneNumbers == null || phoneNumbers.isEmpty()) {
 			return new ArrayList<TelefonoEntity>();
@@ -112,16 +115,19 @@ public class PersonaMapperMaria {
 				: Character.valueOf('M').equals(genero) ? Gender.MALE : Gender.OTHER;
 	}
 
+	/** Edad valida (>= 0) o null. */
 	private Integer validateAge(Integer edad) {
 		return edad != null && edad >= 0 ? edad : null;
 	}
 
+	/** Estudios de la entidad -> dominio; lista vacia si no hay. */
 	private List<Study> validateStudies(List<EstudiosEntity> estudiosEntity) {
 		return estudiosEntity != null && !estudiosEntity.isEmpty() ? estudiosEntity.stream()
 				.map(estudio -> estudiosMapperMaria.fromAdapterToDomain(estudio)).collect(Collectors.toList())
 				: new ArrayList<Study>();
 	}
 
+	/** Telefonos de la entidad -> dominio; lista vacia si no hay. */
 	private List<Phone> validatePhones(List<TelefonoEntity> telefonoEntities) {
 		return telefonoEntities != null && !telefonoEntities.isEmpty() ? telefonoEntities.stream()
 				.map(telefono -> telefonoMapperMaria.fromAdapterToDomain(telefono)).collect(Collectors.toList())

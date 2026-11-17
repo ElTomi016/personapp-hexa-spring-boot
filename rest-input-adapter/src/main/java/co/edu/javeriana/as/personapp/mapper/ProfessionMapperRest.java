@@ -10,6 +10,7 @@ import co.edu.javeriana.as.personapp.model.response.ProfessionResponse;
 @Mapper
 public class ProfessionMapperRest {
 
+	/** Profession (dominio) -> JSON de respuesta. */
 	public ProfessionResponse fromDomainToAdapterRest(Profession profession, String database) {
 		return new ProfessionResponse(
 				profession.getIdentification() == null ? null : profession.getIdentification() + "",
@@ -19,6 +20,7 @@ public class ProfessionMapperRest {
 				"OK");
 	}
 
+	/** JSON de entrada -> Profession, validando campos. */
 	public Profession fromAdapterToDomain(ProfessionRequest request) throws InvalidOptionException {
 		RequestParser.requireBody(request);
 		Profession profession = new Profession();

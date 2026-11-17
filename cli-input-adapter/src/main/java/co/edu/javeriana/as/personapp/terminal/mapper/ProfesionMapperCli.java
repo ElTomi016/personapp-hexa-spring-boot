@@ -8,6 +8,7 @@ import co.edu.javeriana.as.personapp.terminal.model.ProfesionModelCli;
 @Mapper
 public class ProfesionMapperCli {
 
+	/** Dominio -> modelo de consola (lo que se imprime). */
 	public ProfesionModelCli fromDomainToAdapterCli(Profession profession) {
 		ProfesionModelCli profesionModelCli = new ProfesionModelCli();
 		profesionModelCli.setId(profession.getIdentification());
@@ -16,6 +17,7 @@ public class ProfesionMapperCli {
 		return profesionModelCli;
 	}
 
+	/** Modelo de consola -> dominio. */
 	public Profession fromAdapterCliToDomain(ProfesionModelCli profesionModelCli) {
 		Profession profession = new Profession();
 		profession.setIdentification(profesionModelCli.getId());

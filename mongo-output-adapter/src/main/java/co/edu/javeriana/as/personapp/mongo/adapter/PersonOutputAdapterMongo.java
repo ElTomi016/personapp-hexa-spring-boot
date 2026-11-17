@@ -61,9 +61,11 @@ public class PersonOutputAdapterMongo implements PersonOutputPort {
 			estudiosRepositoryMongo.save(estudio);
 		}
 		// [A] Se relee para devolver la persona ya con sus listas resueltas.
+		/** Busca por cc con una sola consulta; null si no existe. */
 		return findById(person.getIdentification());
 	}
 
+	/** Borra por cc; false si no existe, true si quedo eliminado. */
 	@Override
 	public Boolean delete(Integer identification) {
 		log.debug("Into delete on Adapter MongoDB");
@@ -77,6 +79,7 @@ public class PersonOutputAdapterMongo implements PersonOutputPort {
 		return !personaRepositoryMongo.existsById(identification);
 	}
 
+	/** Lista todos los registros ya mapeados a dominio. */
 	@Override
 	public List<Person> find() {
 		log.debug("Into find on Adapter MongoDB");

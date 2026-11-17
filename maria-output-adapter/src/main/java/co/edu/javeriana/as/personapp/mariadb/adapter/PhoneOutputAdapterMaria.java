@@ -31,6 +31,7 @@ public class PhoneOutputAdapterMaria implements PhoneOutputPort {
 	@Autowired
 	private TelefonoMapperMaria telefonoMapperMaria;
 
+	/** Guarda (crea o reemplaza) y devuelve lo persistido. */
 	@Override
 	public Phone save(Phone phone) {
 		log.debug("Into save on Adapter MariaDB (phone)");
@@ -38,6 +39,7 @@ public class PhoneOutputAdapterMaria implements PhoneOutputPort {
 		return telefonoMapperMaria.fromAdapterToDomain(persisted);
 	}
 
+	/** Borra por numero; false si no existe, true si quedo eliminado. */
 	@Override
 	public Boolean delete(String number) {
 		log.debug("Into delete on Adapter MariaDB (phone)");
@@ -48,6 +50,7 @@ public class PhoneOutputAdapterMaria implements PhoneOutputPort {
 		return !telefonoRepositoryMaria.existsById(number);
 	}
 
+	/** Lista todos los registros ya mapeados a dominio. */
 	@Override
 	public List<Phone> find() {
 		log.debug("Into find on Adapter MariaDB (phone)");
@@ -55,6 +58,7 @@ public class PhoneOutputAdapterMaria implements PhoneOutputPort {
 				.collect(Collectors.toList());
 	}
 
+	/** Busca por numero con una sola consulta; null si no existe. */
 	@Override
 	public Phone findById(String number) {
 		log.debug("Into findById on Adapter MariaDB (phone)");

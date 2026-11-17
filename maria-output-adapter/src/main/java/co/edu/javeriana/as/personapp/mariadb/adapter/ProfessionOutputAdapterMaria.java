@@ -30,6 +30,7 @@ public class ProfessionOutputAdapterMaria implements ProfessionOutputPort {
 	@Autowired
 	private ProfesionMapperMaria profesionMapperMaria;
 
+	/** Guarda (crea o reemplaza) y devuelve lo persistido. */
 	@Override
 	public Profession save(Profession profession) {
 		log.debug("Into save on Adapter MariaDB (profession)");
@@ -37,6 +38,7 @@ public class ProfessionOutputAdapterMaria implements ProfessionOutputPort {
 		return profesionMapperMaria.fromAdapterToDomain(persisted);
 	}
 
+	/** Borra por id; false si no existe, true si quedo eliminado. */
 	@Override
 	public Boolean delete(Integer identification) {
 		log.debug("Into delete on Adapter MariaDB (profession)");
@@ -47,6 +49,7 @@ public class ProfessionOutputAdapterMaria implements ProfessionOutputPort {
 		return !profesionRepositoryMaria.existsById(identification);
 	}
 
+	/** Lista todos los registros ya mapeados a dominio. */
 	@Override
 	public List<Profession> find() {
 		log.debug("Into find on Adapter MariaDB (profession)");
@@ -54,6 +57,7 @@ public class ProfessionOutputAdapterMaria implements ProfessionOutputPort {
 				.collect(Collectors.toList());
 	}
 
+	/** Busca por id con una sola consulta; null si no existe. */
 	@Override
 	public Profession findById(Integer identification) {
 		log.debug("Into findById on Adapter MariaDB (profession)");

@@ -26,14 +26,17 @@ public class StudyOutputAdapterMongo implements StudyOutputPort {
 	@Autowired
 	private EstudiosMapperMongo estudiosMapperMongo;
 
+	/** Guarda (crea o reemplaza) y devuelve lo persistido. */
 	@Override
 	public Study save(Study study) {
 		log.debug("Into save on Adapter MongoDB (study)");
 		estudiosRepositoryMongo.save(estudiosMapperMongo.fromDomainToAdapter(study));
 		// [A] Se relee para devolver lo realmente guardado.
+		/** Busca por (cc persona, id profesion) con una sola consulta; null si no existe. */
 		return findById(study.getPerson().getIdentification(), study.getProfession().getIdentification());
 	}
 
+	/** Borra por (cc persona, id profesion); false si no existe, true si quedo eliminado. */
 	@Override
 	public Boolean delete(Integer personIdentification, Integer professionIdentification) {
 		log.debug("Into delete on Adapter MongoDB (study)");
@@ -45,6 +48,7 @@ public class StudyOutputAdapterMongo implements StudyOutputPort {
 		return !estudiosRepositoryMongo.existsById(id);
 	}
 
+	/** Lista todos los registros ya mapeados a dominio. */
 	@Override
 	public List<Study> find() {
 		log.debug("Into find on Adapter MongoDB (study)");

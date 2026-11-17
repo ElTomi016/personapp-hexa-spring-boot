@@ -48,11 +48,13 @@ public class PhoneInputAdapterRest {
 	@Autowired
 	private PhoneMapperRest phoneMapperRest;
 
+	/** Arma el caso de uso con el OutputPort de la base elegida (Maria o Mongo). */
 	private PhoneInputPort phoneInputPort(DatabaseOption database) {
 		return database == DatabaseOption.MARIA ? new PhoneUseCase(phoneOutputPortMaria, personOutputPortMaria)
 				: new PhoneUseCase(phoneOutputPortMongo, personOutputPortMongo);
 	}
 
+	/** Lista todo en la base elegida y lo convierte a respuesta REST. */
 	public List<PhoneResponse> historial(String database) throws InvalidOptionException {
 		log.info("Into historial Phone in Input Adapter");
 		DatabaseOption option = DatabaseResolver.parse(database);
@@ -61,6 +63,7 @@ public class PhoneInputAdapterRest {
 				.map(phone -> phoneMapperRest.fromDomainToAdapterRest(phone, label)).collect(Collectors.toList());
 	}
 
+	/** Valida el request, lo pasa a dominio y lo guarda via caso de uso (POST). */
 	public PhoneResponse crearTelefono(String database, PhoneRequest request)
 			throws InvalidOptionException, NoExistException {
 		DatabaseOption option = DatabaseResolver.parse(database);
@@ -68,6 +71,7 @@ public class PhoneInputAdapterRest {
 		return phoneMapperRest.fromDomainToAdapterRest(created, DatabaseResolver.label(option));
 	}
 
+	/** Valida y reemplaza el registro existente; NoExist si no esta (PUT). */
 	public PhoneResponse editarTelefono(String database, String number, PhoneRequest request)
 			throws InvalidOptionException, NoExistException {
 		DatabaseOption option = DatabaseResolver.parse(database);
@@ -77,10 +81,12 @@ public class PhoneInputAdapterRest {
 		return phoneMapperRest.fromDomainToAdapterRest(edited, DatabaseResolver.label(option));
 	}
 
+	/** Borra el registro; NoExist si no existe (DELETE). */
 	public Boolean eliminarTelefono(String database, String number) throws InvalidOptionException, NoExistException {
 		return phoneInputPort(DatabaseResolver.parse(database)).drop(number);
 	}
 
+	/** Busca por id/llave; NoExist si no esta (GET por id). */
 	public PhoneResponse buscarTelefono(String database, String number)
 			throws InvalidOptionException, NoExistException {
 		DatabaseOption option = DatabaseResolver.parse(database);
@@ -88,6 +94,7 @@ public class PhoneInputAdapterRest {
 				DatabaseResolver.label(option));
 	}
 
+	/** Cuenta los registros de la base elegida (GET /count). */
 	public Integer contarTelefonos(String database) throws InvalidOptionException {
 		return phoneInputPort(DatabaseResolver.parse(database)).count();
 	}

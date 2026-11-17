@@ -46,17 +46,20 @@ public class PhoneInputAdapterCli {
 	@Autowired
 	private TelefonoMapperCli telefonoMapperCli;
 
+	/** Arma el caso de uso con el OutputPort de la base elegida (Maria o Mongo). */
 	private PhoneInputPort phoneInputPort(DatabaseOption database) {
 		return database == DatabaseOption.MARIA ? new PhoneUseCase(phoneOutputPortMaria, personOutputPortMaria)
 				: new PhoneUseCase(phoneOutputPortMongo, personOutputPortMongo);
 	}
 
+	/** Lista todo en la base elegida, como modelos de consola. */
 	public List<TelefonoModelCli> historial(String dbOption) throws InvalidOptionException {
 		log.info("Into historial Phone in Input Adapter");
 		return phoneInputPort(DatabaseResolver.parse(dbOption)).findAll().stream()
 				.map(telefonoMapperCli::fromDomainToAdapterCli).collect(Collectors.toList());
 	}
 
+	/** Convierte el modelo de consola a dominio y lo guarda. */
 	public TelefonoModelCli crear(String dbOption, TelefonoModelCli model)
 			throws InvalidOptionException, NoExistException {
 		Phone created = phoneInputPort(DatabaseResolver.parse(dbOption))
@@ -64,6 +67,7 @@ public class PhoneInputAdapterCli {
 		return telefonoMapperCli.fromDomainToAdapterCli(created);
 	}
 
+	/** Reemplaza un registro existente; NoExist si no esta. */
 	public TelefonoModelCli editar(String dbOption, String numero, TelefonoModelCli model)
 			throws InvalidOptionException, NoExistException {
 		model.setNumero(numero);
@@ -72,15 +76,18 @@ public class PhoneInputAdapterCli {
 		return telefonoMapperCli.fromDomainToAdapterCli(edited);
 	}
 
+	/** Elimina un registro; NoExist si no existe. */
 	public Boolean eliminar(String dbOption, String numero) throws InvalidOptionException, NoExistException {
 		return phoneInputPort(DatabaseResolver.parse(dbOption)).drop(numero);
 	}
 
+	/** Busca por llave; NoExist si no esta. */
 	public TelefonoModelCli buscar(String dbOption, String numero) throws InvalidOptionException, NoExistException {
 		return telefonoMapperCli
 				.fromDomainToAdapterCli(phoneInputPort(DatabaseResolver.parse(dbOption)).findOne(numero));
 	}
 
+	/** Cuenta los registros de la base elegida. */
 	public Integer contar(String dbOption) throws InvalidOptionException {
 		return phoneInputPort(DatabaseResolver.parse(dbOption)).count();
 	}

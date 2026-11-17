@@ -21,6 +21,7 @@ public class TelefonoMapperMaria {
 	@Autowired
 	private PersonaMapperMaria personaMapperMaria;
 
+	/** Dominio -> entidad JPA de telefono. */
 	public TelefonoEntity fromDomainToAdapter(Phone phone) {
 		Objects.requireNonNull(phone, "phone is required");
 		TelefonoEntity telefonoEntity = new TelefonoEntity();
@@ -36,6 +37,7 @@ public class TelefonoMapperMaria {
 		return new PersonaEntity(owner.getIdentification());
 	}
 
+	/** Entidad -> dominio; el dueno llega shallow. */
 	public Phone fromAdapterToDomain(TelefonoEntity telefonoEntity) {
 		Phone phone = new Phone();
 		phone.setNumber(telefonoEntity.getNum());
@@ -44,6 +46,7 @@ public class TelefonoMapperMaria {
 		return phone;
 	}
 
+	/** Exige dueno y lo mapea shallow para no ciclar. */
 	private Person validateOwner(PersonaEntity duenio) {
 		if (duenio == null) {
 			throw new IllegalStateException("The phone has no owner");

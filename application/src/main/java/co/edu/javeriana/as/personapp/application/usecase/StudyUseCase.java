@@ -32,11 +32,13 @@ public class StudyUseCase implements StudyInputPort {
 		this.professionPersintence = professionPersintence;
 	}
 
+	/** Inyecta el OutputPort (adaptador Maria o Mongo) que usara este caso de uso. */
 	@Override
 	public void setPersintence(StudyOutputPort studyPersintence) {
 		this.studyPersintence = studyPersintence;
 	}
 
+	/** Crea/guarda el registro validando referencias cuando aplica. */
 	@Override
 	public Study create(Study study) throws NoExistException {
 		log.debug("Into create on Application Domain");
@@ -44,6 +46,7 @@ public class StudyUseCase implements StudyInputPort {
 		return studyPersintence.save(study);
 	}
 
+	/** Edita: verifica que exista y lo guarda; NoExistException si no. */
 	@Override
 	public Study edit(Integer personIdentification, Integer professionIdentification, Study study)
 			throws NoExistException {
@@ -59,6 +62,7 @@ public class StudyUseCase implements StudyInputPort {
 				+ professionIdentification + " does not exist into db, cannot be edited");
 	}
 
+	/** Elimina: verifica que exista y lo borra; NoExistException si no. */
 	@Override
 	public Boolean drop(Integer personIdentification, Integer professionIdentification) throws NoExistException {
 		Study oldStudy = studyPersintence.findById(personIdentification, professionIdentification);
@@ -68,12 +72,14 @@ public class StudyUseCase implements StudyInputPort {
 				+ professionIdentification + " does not exist into db, cannot be dropped");
 	}
 
+	/** Devuelve todos los registros del OutputPort. */
 	@Override
 	public List<Study> findAll() {
 		log.info("Output: " + studyPersintence.getClass());
 		return studyPersintence.find();
 	}
 
+	/** Busca uno por su llave; NoExistException si no existe. */
 	@Override
 	public Study findOne(Integer personIdentification, Integer professionIdentification) throws NoExistException {
 		Study oldStudy = studyPersintence.findById(personIdentification, professionIdentification);
@@ -83,11 +89,13 @@ public class StudyUseCase implements StudyInputPort {
 				+ professionIdentification + " does not exist into db, cannot be found");
 	}
 
+	/** Cantidad total de registros. */
 	@Override
 	public Integer count() {
 		return findAll().size();
 	}
 
+	/** Exige persona y profesion existentes antes de guardar el estudio. */
 	private void validateReferences(Study study) throws NoExistException {
 		if (study.getPerson() == null || study.getPerson().getIdentification() == null
 				|| study.getProfession() == null || study.getProfession().getIdentification() == null) {

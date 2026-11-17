@@ -11,6 +11,7 @@ import co.edu.javeriana.as.personapp.model.response.PhoneResponse;
 @Mapper
 public class PhoneMapperRest {
 
+	/** Phone (dominio) -> JSON de respuesta. */
 	public PhoneResponse fromDomainToAdapterRest(Phone phone, String database) {
 		Person owner = phone.getOwner();
 		return new PhoneResponse(

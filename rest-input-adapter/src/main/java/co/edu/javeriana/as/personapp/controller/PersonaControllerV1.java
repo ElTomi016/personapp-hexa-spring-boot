@@ -40,6 +40,7 @@ public class PersonaControllerV1 {
 	@Autowired
 	private PersonaInputAdapterRest personaInputAdapterRest;
 	
+	/** GET lista: todos los registros de la base indicada en la ruta. */
 	@Operation(summary = "Listar personas", description = "Devuelve todas las personas de la base indicada.")
 	@ApiResponse(responseCode = "200", description = "Lista de personas")
 	@GetMapping(path = "/{database}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,6 +51,7 @@ public class PersonaControllerV1 {
 		return personaInputAdapterRest.historial(database);
 	}
 	
+	/** POST: crea (o reemplaza) y responde 201. */
 	@Operation(summary = "Crear persona", description = "Crea una persona. Si el dni ya existe se reemplaza. La base de la ruta manda sobre el campo database del cuerpo. En MariaDB sex solo admite MALE/FEMALE (o M/F).")
 	@ApiResponse(responseCode = "201", description = "Persona creada")
 	@PostMapping(path = "/{database}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -61,6 +63,7 @@ public class PersonaControllerV1 {
 		return personaInputAdapterRest.crearPersona(database, request);
 	}
 
+	/** GET por id: devuelve uno o 404. */
 	@Operation(summary = "Buscar persona", description = "Devuelve la persona con el dni indicado.")
 	@ApiResponse(responseCode = "200", description = "Persona encontrada")
 	@GetMapping(path = "/{database}/{cc}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -72,6 +75,7 @@ public class PersonaControllerV1 {
 		return personaInputAdapterRest.buscarPersona(database, cc);
 	}
 
+	/** PUT: reemplaza el registro o 404. */
 	@Operation(summary = "Editar persona", description = "Reemplaza los datos de la persona. El dni de la ruta manda sobre el del cuerpo; lo que no se envia (por ejemplo age) queda vacio.")
 	@ApiResponse(responseCode = "200", description = "Persona editada")
 	@PutMapping(path = "/{database}/{cc}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -83,6 +87,7 @@ public class PersonaControllerV1 {
 		return personaInputAdapterRest.editarPersona(database, cc, request);
 	}
 
+	/** DELETE: borra y responde confirmacion o 404. */
 	@Operation(summary = "Eliminar persona", description = "Elimina la persona con el dni indicado.")
 	@ApiResponse(responseCode = "200", description = "Persona eliminada")
 	@DeleteMapping(path = "/{database}/{cc}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -97,6 +102,7 @@ public class PersonaControllerV1 {
 		throw new IllegalStateException("The person with id " + cc + " could not be deleted");
 	}
 
+	/** GET /count: cantidad de registros. */
 	@Operation(summary = "Contar personas", description = "Devuelve cuantas personas hay en la base indicada.")
 	@ApiResponse(responseCode = "200", description = "Cantidad de personas")
 	@GetMapping(path = "/{database}/count", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -107,6 +113,7 @@ public class PersonaControllerV1 {
 		return personaInputAdapterRest.contarPersonas(database);
 	}
 
+	/** GET: telefonos de la persona (agregacion). */
 	@Operation(summary = "Telefonos de una persona", description = "Devuelve los telefonos de la persona (agregacion).")
 	@ApiResponse(responseCode = "200", description = "Lista de telefonos de la persona")
 	@GetMapping(path = "/{database}/{cc}/telefonos", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -118,6 +125,7 @@ public class PersonaControllerV1 {
 		return personaInputAdapterRest.telefonosDePersona(database, cc);
 	}
 
+	/** GET: estudios de la persona (agregacion). */
 	@Operation(summary = "Estudios de una persona", description = "Devuelve los estudios de la persona (agregacion).")
 	@ApiResponse(responseCode = "200", description = "Lista de estudios de la persona")
 	@GetMapping(path = "/{database}/{cc}/estudios", produces = MediaType.APPLICATION_JSON_VALUE)

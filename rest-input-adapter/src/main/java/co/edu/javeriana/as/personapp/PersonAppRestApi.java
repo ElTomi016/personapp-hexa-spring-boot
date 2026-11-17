@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootApplication
 public class PersonAppRestApi {
 
+	/** Arranca el servidor REST en el puerto 3000. */
 	public static void main(String[] args) {
 		log.info("Starting PersonAppRestApi ...");
 		SpringApplication.run(PersonAppRestApi.class, args);

@@ -38,6 +38,7 @@ public class StudyControllerV1 {
 	@Autowired
 	private StudyInputAdapterRest studyInputAdapterRest;
 
+	/** GET lista: todos los registros de la base indicada en la ruta. */
 	@Operation(summary = "Listar estudios", description = "Devuelve todos los estudios de la base indicada.")
 	@ApiResponse(responseCode = "200", description = "Lista de estudios")
 	@GetMapping(path = "/{database}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,6 +49,7 @@ public class StudyControllerV1 {
 		return studyInputAdapterRest.historial(database);
 	}
 
+	/** POST: crea (o reemplaza) y responde 201. */
 	@Operation(summary = "Crear estudio", description = "Crea el estudio de una persona (dni) en una profesion (professionId); ambas deben existir (404 si no). La fecha usa el formato yyyy-MM-dd. Si la pareja ya existe se reemplaza. La base de la ruta manda sobre el campo database del cuerpo.")
 	@ApiResponse(responseCode = "201", description = "Estudio creado")
 	@PostMapping(path = "/{database}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -59,6 +61,7 @@ public class StudyControllerV1 {
 		return studyInputAdapterRest.crearEstudio(database, request);
 	}
 
+	/** GET por id: devuelve uno o 404. */
 	@Operation(summary = "Buscar estudio", description = "Devuelve el estudio de la persona en la profesion indicada (clave compuesta).")
 	@ApiResponse(responseCode = "200", description = "Estudio encontrado")
 	@GetMapping(path = "/{database}/{cc}/{professionId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -71,6 +74,7 @@ public class StudyControllerV1 {
 		return studyInputAdapterRest.buscarEstudio(database, cc, professionId);
 	}
 
+	/** PUT: reemplaza el registro o 404. */
 	@Operation(summary = "Editar estudio", description = "Reemplaza fecha y universidad del estudio. Los ids de la ruta mandan sobre los del cuerpo.")
 	@ApiResponse(responseCode = "200", description = "Estudio editado")
 	@PutMapping(path = "/{database}/{cc}/{professionId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -83,6 +87,7 @@ public class StudyControllerV1 {
 		return studyInputAdapterRest.editarEstudio(database, cc, professionId, request);
 	}
 
+	/** DELETE: borra y responde confirmacion o 404. */
 	@Operation(summary = "Eliminar estudio", description = "Elimina el estudio de la persona en la profesion indicada.")
 	@ApiResponse(responseCode = "200", description = "Estudio eliminado")
 	@DeleteMapping(path = "/{database}/{cc}/{professionId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -99,6 +104,7 @@ public class StudyControllerV1 {
 				"The study of person " + cc + " and profession " + professionId + " could not be deleted");
 	}
 
+	/** GET /count: cantidad de registros. */
 	@Operation(summary = "Contar estudios", description = "Devuelve cuantos estudios hay en la base indicada.")
 	@ApiResponse(responseCode = "200", description = "Cantidad de estudios")
 	@GetMapping(path = "/{database}/count", produces = MediaType.APPLICATION_JSON_VALUE)

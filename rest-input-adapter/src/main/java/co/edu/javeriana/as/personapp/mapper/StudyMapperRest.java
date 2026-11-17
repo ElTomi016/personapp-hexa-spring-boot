@@ -12,6 +12,7 @@ import co.edu.javeriana.as.personapp.model.response.StudyResponse;
 @Mapper
 public class StudyMapperRest {
 
+	/** Study (dominio) -> JSON de respuesta. */
 	public StudyResponse fromDomainToAdapterRest(Study study, String database) {
 		Person person = study.getPerson();
 		Profession profession = study.getProfession();

@@ -28,6 +28,7 @@ public class EstudiosMapperMongo {
 	@Autowired
 	private ProfesionMapperMongo profesionMapperMongo;
 
+	/** Dominio -> documento; _id = 'cc-idProf', persona y profesion por id. */
 	public EstudiosDocument fromDomainToAdapter(Study study) {
 		Objects.requireNonNull(study, "study is required");
 		Objects.requireNonNull(study.getPerson(), "the study person is required");
@@ -54,10 +55,12 @@ public class EstudiosMapperMongo {
 		return identificationPerson + "-" + identificationProfession;
 	}
 
+	/** Universidad nunca nula. */
 	private String validateUniver(String universityName) {
 		return universityName != null ? universityName : "";
 	}
 
+	/** Documento -> dominio con persona y profesion shallow. */
 	public Study fromAdapterToDomain(EstudiosDocument estudiosDocument) {
 		Study study = new Study();
 		study.setPerson(validatePerson(estudiosDocument.getPrimaryPersona()));
@@ -67,6 +70,7 @@ public class EstudiosMapperMongo {
 		return study;
 	}
 
+	/** Exige persona y la mapea shallow. */
 	private Person validatePerson(PersonaDocument persona) {
 		if (persona == null) {
 			throw new IllegalStateException("The study has no person");
@@ -75,6 +79,7 @@ public class EstudiosMapperMongo {
 		return personaMapperMongo.fromAdapterToDomainShallow(persona);
 	}
 
+	/** Exige profesion y la mapea shallow. */
 	private Profession validateProfession(ProfesionDocument profesion) {
 		if (profesion == null) {
 			throw new IllegalStateException("The study has no profession");
@@ -82,10 +87,12 @@ public class EstudiosMapperMongo {
 		return profesionMapperMongo.fromAdapterToDomainShallow(profesion);
 	}
 
+	/** Fecha de graduacion tal cual (ya es LocalDate). */
 	private LocalDate validateGraduationDate(LocalDate fecha) {
 		return fecha;
 	}
 
+	/** Universidad nunca nula. */
 	private String validateUniversityName(String univer) {
 		return univer != null ? univer : "";
 	}

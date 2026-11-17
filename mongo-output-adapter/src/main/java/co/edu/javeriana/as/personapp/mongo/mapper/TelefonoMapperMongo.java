@@ -20,6 +20,7 @@ public class TelefonoMapperMongo {
 	@Autowired
 	private PersonaMapperMongo personaMapperMongo;
 
+	/** Dominio -> documento; _id = numero de telefono. */
 	public TelefonoDocument fromDomainToAdapter(Phone phone) {
 		Objects.requireNonNull(phone, "phone is required");
 		TelefonoDocument telefonoDocument = new TelefonoDocument();
@@ -37,6 +38,7 @@ public class TelefonoMapperMongo {
 		return duenio;
 	}
 
+	/** Documento -> dominio; el dueno llega shallow. */
 	public Phone fromAdapterToDomain(TelefonoDocument telefonoDocument) {
 		Phone phone = new Phone();
 		phone.setNumber(telefonoDocument.getId());
@@ -45,6 +47,7 @@ public class TelefonoMapperMongo {
 		return phone;
 	}
 
+	/** Exige dueno y lo mapea shallow para no ciclar. */
 	private Person validateOwner(PersonaDocument duenio) {
 		if (duenio == null) {
 			throw new IllegalStateException("The phone has no owner");
